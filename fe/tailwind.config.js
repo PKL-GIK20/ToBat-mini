@@ -18,6 +18,10 @@ module.exports = {
       'primary': '#20BFAA',
       'hovercolor': '#009D87'
     },
+    fontFamily: {
+      quicksand: ['Quicksand', 'sans-serif'],
+      montserrat: ['Montserrat', 'sans-serif'],
+    },
   },
   plugins: [],
 }
