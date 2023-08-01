@@ -16,7 +16,8 @@ module.exports = {
       'bubble-gum': '#ff77e9',
       'bermuda': '#78dcca',
       'primary': '#20BFAA',
-      'hovercolor': '#009D87'
+      'hovercolor': '#009D87',
+      'line' : '#BCB1B1'
     },
     fontFamily: {
       quicksand: ['Quicksand', 'sans-serif'],

@@ -84,7 +84,7 @@ const Register = () => {
                                 <input
                                     className="w-full border-b-[3px] border-b-primary outline-none hover:border-b-hovercolor focus:border-b-hovercolor"
                                     type={isPasswordVisible ? "text" : "password"}
-                                    placeholder="Password"
+                                    placeholder="Confirm Password"
                                 />
                                 <button
                                     className="absolute inset-y-0 right-0 flex items-center text-black pb-2"
