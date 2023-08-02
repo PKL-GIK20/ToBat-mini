@@ -17,7 +17,9 @@ module.exports = {
       'bermuda': '#78dcca',
       'primary': '#20BFAA',
       'hovercolor': '#009D87',
-      'line' : '#BCB1B1'
+      'line' : '#BCB1B1',
+      'bg': '#FCF9F9',
+      'table':'#F5F5F5'
     },
     fontFamily: {
       quicksand: ['Quicksand', 'sans-serif'],
