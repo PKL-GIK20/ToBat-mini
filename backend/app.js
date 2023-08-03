@@ -5,6 +5,8 @@ const path = require("path");
 const autoIncrement = require('mongoose-auto-increment');
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger.json')
+const bodyParser = require('body-parser');
+
 require("dotenv").config();
 
 const app = express();
@@ -33,6 +35,11 @@ db.once('open', () => {
 // Inisialisasi mongoose-auto-increment dengan instance koneksi
 autoIncrement.initialize(db);
 
+// Parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Parse application/json
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());

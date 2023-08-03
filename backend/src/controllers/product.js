@@ -1,27 +1,46 @@
 const Product = require('../models/product');
 const Category = require('../models/category');
 const mongoose = require('mongoose');
+const multer = require('multer');
 
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads');
+    },
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      const filename = `${Date.now()}${ext}`;
+      cb(null, filename);
+    },
+  });
+
+const upload = multer({
+    dest: 'uploads/', // Ganti dengan direktori tujuan untuk menyimpan gambar
+  });
+  
+  // Handler untuk menambahkan produk dengan mengunggah gambar
 const addProduct = async (req, res) => {
-  const { name, image, category } = req.body;
+  const { name, category } = req.body;
   try {
-    const isValidCategoryId = mongoose.Types.ObjectId.isValid(category);
-    if (!isValidCategoryId) {
-      return res.status(400).json({ message: 'Invalid category ID' });
-    }
 
+    // Periksa apakah kategori dengan ID yang diberikan ada dalam database
     const existingCategory = await Category.findById(category);
     if (!existingCategory) {
       return res.status(404).json({ message: 'Category not found' });
     }
 
+    // Ambil nama file gambar dari request (req.file) yang telah diunggah menggunakan multer
+    const image = req.file ? req.file.filename : null;
+
+    // Buat produk baru dengan mengaitkannya dengan kategori yang valid dan menyimpan nama file gambar
     const newProduct = await Product.create({ name, image, category });
     res.status(201).json(newProduct);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
+
 
 const getAllProducts = async (req, res) => {
   try {
