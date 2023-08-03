@@ -3,10 +3,10 @@ const router = express.Router();
 const stockController = require('../controllers/stock');
 
 // Menampilkan stok untuk suatu produk berdasarkan ID produk
-router.get('/:productId/stock', stockController.getProductStock);
+router.get('/', stockController.getAllStocks);
 
 // Menambahkan stok baru untuk suatu produk
-router.post('/:productId/stock', stockController.addProductStock);
+router.post('/', stockController.addStock);
 
 // Controller lainnya sesuai kebutuhan, seperti mengubah data stok, atau menghapus stok.
 
