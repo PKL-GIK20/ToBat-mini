@@ -3,6 +3,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
 const autoIncrement = require('mongoose-auto-increment');
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
 require("dotenv").config();
 
 const app = express();
@@ -45,3 +47,9 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log("Port run on " + PORT);
 });
+
+// Import konfigurasi Swagger
+const swagger = require('./swagger'); // Import berkas swagger.js
+
+// Middleware untuk meng-serve dokumen Swagger UI
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
