@@ -3,23 +3,19 @@ const Category = require('../models/category');
 const mongoose = require('mongoose');
 
 
-// Controller untuk menambahkan produk baru
 const addProduct = async (req, res) => {
   const { name, image, category } = req.body;
   try {
-    // Periksa apakah ID kategori yang diterima adalah ID yang valid
     const isValidCategoryId = mongoose.Types.ObjectId.isValid(category);
     if (!isValidCategoryId) {
       return res.status(400).json({ message: 'Invalid category ID' });
     }
 
-    // Periksa apakah kategori dengan ID yang diberikan ada dalam database
     const existingCategory = await Category.findById(category);
     if (!existingCategory) {
       return res.status(404).json({ message: 'Category not found' });
     }
 
-    // Buat produk baru dengan mengaitkannya dengan kategori yang valid
     const newProduct = await Product.create({ name, image, category });
     res.status(201).json(newProduct);
   } catch (err) {
@@ -27,7 +23,6 @@ const addProduct = async (req, res) => {
   }
 };
 
-// Controller untuk mendapatkan semua produk
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find().populate('category', 'name');

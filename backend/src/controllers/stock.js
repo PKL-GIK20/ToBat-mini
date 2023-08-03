@@ -13,7 +13,7 @@ const getAllStocks = async (req, res) => {
 
 // Menambahkan data stock baru
 const addStock = async (req, res) => {
-  const { product, jumlah } = req.body;
+  const { product, jumlah, satuan } = req.body;
   try {
     // Periksa apakah ID produk yang diberikan ada dalam database
     const existingProduct = await Product.findById(product);
@@ -22,7 +22,7 @@ const addStock = async (req, res) => {
     }
 
     // Buat data stock baru dengan mengaitkannya dengan produk yang valid
-    const newStock = await Stock.create({ product, jumlah });
+    const newStock = await Stock.create({ product, jumlah, satuan });
     res.status(201).json(newStock);
   } catch (err) {
     res.status(400).json({ message: err.message });
