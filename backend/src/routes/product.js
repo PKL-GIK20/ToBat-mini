@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/product');
 
+
 // Menampilkan semua produk
 router.get('/', productController.getAllProducts);
 
