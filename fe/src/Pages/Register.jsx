@@ -1,14 +1,84 @@
 import React from 'react';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../axiosConfig";
 
 const Register = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const navigate = useNavigate();
+
+    const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState(false);
 
     function togglePasswordVisibility() {
         setIsPasswordVisible((prevState) => !prevState);
     }
+
+    const handleUsername = (e) => {
+        setUsername(e.target.value);
+        setSubmitted(false);
+    };
+
+    const handlePassword = (e) => {
+        setPassword(e.target.value);
+        setSubmitted(false);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (
+            username === "" ||
+            password === ""
+        ) {
+            setError(true);
+        } else {
+            // Create an object with the form data
+            const formData = {
+                username: username,
+                password: password,
+            };
+
+            // Send the data to the Back-End using Axios
+            axios
+                .post("/api/register", formData)
+                .then((response) => {
+                    setSubmitted(true);
+                    setError(false);
+                    navigate("/");
+                })
+                .catch((error) => {
+                    setError(true);
+                });
+        }
+    };
+    const successMessage = () => {
+        return (
+            <div
+                className="success"
+                style={{
+                    display: submitted ? "" : "none",
+                }}
+            >
+                <h1>User {username} successfully registered!!</h1>
+            </div>
+        );
+    };
+
+    // Showing error message if error is true
+    const errorMessage = () => {
+        return (
+            <div
+                className="error"
+                style={{
+                    display: error ? "" : "none",
+                }}
+            >
+                <h1>Please enter all the fields</h1>
+            </div>
+        );
+    };
 
     return (
         <div className="flex justify-center items-center h-screen bg-[#FCF9F9]">
@@ -21,6 +91,7 @@ const Register = () => {
                     <div className='flex justify-center mt-5'>
                         <img className='h-[35%] w-[35%]' src={"./assets/tobat_logo.png"} alt="Logo" />
                     </div>
+                    {errorMessage()}
                     <form className='px-[50px]'>
                         <div className='py-[75px] flex flex-col font-montserrat'>
                             <label className="pt-3 font-normal tracking-wider text-[#898989]">Username</label>
@@ -28,6 +99,8 @@ const Register = () => {
                                 className="border-b-[3px] border-b-primary outline-none hover:border-b-hovercolor focus:border-b-hovercolor"
                                 type="text"
                                 placeholder="Username"
+                                value={username}
+                                onChange={handleUsername}
                             />
                             <label className="pt-3 tracking-wider text-[#898989]">Password</label>
                             <div className='relative'>
@@ -35,6 +108,8 @@ const Register = () => {
                                     className="w-full border-b-[3px] border-b-primary outline-none hover:border-b-hovercolor focus:border-b-hovercolor"
                                     type={isPasswordVisible ? "text" : "password"}
                                     placeholder="Password"
+                                    value={password}
+                                    onChange={handlePassword}
                                 />
                                 <button
                                     className="absolute inset-y-0 right-0 flex items-center text-black pb-2"
@@ -134,6 +209,7 @@ const Register = () => {
                             <button
                                 className="mt-[20px] text-xl text-white w-[40%] border-2 bg-primary hover:bg-hovercolor rounded-full py-1 "
                                 type="submit"
+                                onClick={handleSubmit}
                             >
                                 Register
                             </button>
