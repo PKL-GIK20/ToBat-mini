@@ -10,9 +10,8 @@ const addPenerimaan = async (req, res) => {
     const { product, stock, total_price, tax, discount, quantity_macro } = req.body;
     try {
       // Periksa apakah ID produk dan ID stok yang diterima adalah ID yang valid
-      const isValidProductId = mongoose.Types.ObjectId.isValid(product);
       const isValidStockId = mongoose.Types.ObjectId.isValid(stock);
-      if (!isValidProductId || !isValidStockId) {
+      if (!isValidStockId) {
         return res.status(400).json({ message: 'Invalid product or stock ID' });
       }
   
@@ -58,13 +57,13 @@ const addPenerimaan = async (req, res) => {
 
 // Controller untuk mendapatkan semua penerimaan produk
 const getAllPenerimaan = async (req, res) => {
-  try {
-    const penerimaan = await Penerimaan.find().populate('product', 'name');
-    res.status(200).json(penerimaan);
-  } catch (err) {
-    res.status(500).json({ message: 'Internal server error' });
-  }
-};
+    try {
+      const penerimaan = await Penerimaan.find();
+      res.status(200).json(penerimaan);
+    } catch (err) {
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 
 module.exports = {
   addPenerimaan,
