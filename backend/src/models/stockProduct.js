@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const stockProdSchema = new mongoose.Schema({
   penerimaan: { type: mongoose.Schema.Types.ObjectId, ref: 'Penerimaan', required: true },
+  product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
   expired_at: { type: Date, required: true },
   quantity_micro: { type: Number, required: true },
   price: { type: Number, required: true },
