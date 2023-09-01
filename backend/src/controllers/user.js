@@ -73,7 +73,6 @@ const updateProfile = async (req, res) => {
           return res.status(400).json({ message: "Old password is required" });
         }
 
-        // Memeriksa kecocokan password lama sebelum melakukan pembaruan
         const isMatch = await bcrypt.compare(
           user.oldPassword,
           req.user.password

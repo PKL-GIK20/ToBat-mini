@@ -35,6 +35,7 @@ db.once('open', () => {
 
 autoIncrement.initialize(db);
 
+
 app.use(bodyParser.urlencoded({ extended: false }));
 const DIR = "./uploads/";
 const storage = multer.diskStorage({
@@ -73,6 +74,8 @@ app.use((req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
   next();
 });
+
+
 
 app.listen(PORT, () => {
   console.log("Port run on " + PORT);
