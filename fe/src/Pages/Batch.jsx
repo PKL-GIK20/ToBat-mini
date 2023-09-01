@@ -91,8 +91,8 @@ const Batch = () => {
                                     </div>
                                 ) : (
                                     data.slice(0, maxRowsToShow).map((produks) => (
-                                        <tr className='shadow-md' key={produks._id}>
-                                            <td className="text-center px-4 py-2">{produks.id}</td>
+                                        <tr className='bg-[#F5F5F5] rounded-lg shadow-md' key={produks._id}>
+                                            <td className="text-center px-4 py-2 rounded-l-lg">{produks.id}</td>
                                             <td className="text-center px-4 py-2">{produks.code}</td>
                                             <td className="text-center px-4 py-2">{produks.name}</td>
                                             <td className="text-center px-4 py-2">{produks.category}</td>
@@ -101,7 +101,7 @@ const Batch = () => {
                                             <td className="text-center px-4 py-2">{produks.pricema}</td>
                                             <td className="text-center px-4 py-2">{produks.pricemi}</td>
                                             <td className="text-center px-4 py-2">{produks.expired_at}</td>
-                                            <td className="text-center px-4 py-2">{produks.buy_at}</td>
+                                            <td className="text-center px-4 py-2 rounded-r-lg">{produks.buy_at}</td>
                                         </tr>
                                     ))
                                 )}

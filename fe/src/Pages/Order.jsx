@@ -97,7 +97,7 @@ const Order = () => {
                                     </div>
                                 ) : (
                                     products.slice(0, maxRowsToShow).map((product) => (
-                                        <tr key={product._id}>
+                                        <tr className='bg-[#F5F5F5] rounded-md shadow-md' key={product._id}>
                                             <td className="text-center w-10 px-4 py-2 rounded-l-lg">{product.productId}</td>
                                             <td className="text-center max-w-[25px] h-auto px-4 py-2">
                                                 <img src={`url(${product.image})`} alt={product.name} className="w-20 h-20 rounded-sm mx-auto" />
