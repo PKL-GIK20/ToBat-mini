@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "../axiosConfig";
 import Navbar from "../Component/Navbar";
+import moment from 'moment';
 
 const Product = () => {
     // const data = [
@@ -43,6 +44,7 @@ const Product = () => {
     const indexOfLastRow = currentPage * maxRowsToShow;
     const indexOfFirstRow = indexOfLastRow - maxRowsToShow;
     const currentData = produk.slice(indexOfFirstRow, indexOfLastRow);
+    
 
     const handleNextPage = () => {
         if (indexOfLastRow < produk.length) {
@@ -60,7 +62,7 @@ const Product = () => {
         <div className='bg-bg h-screen w-screen overflow-hidden'>
             <Navbar />
             <div className='flex flex-col items-center w-[98%] ml-[80px] pt-6'>
-                <h1 className='text-[50px] font-montserrat mb-7'>List Product</h1>
+                <h1 className='text-[50px] font-montserrat mb-7'>Stock Opname</h1>
                 <div className="flex flex-col items-center w-[90%] bg-white px-5 py-3 shadow-md font-montserrat rounded-md">
                     <div className='flex justify-end w-[100%]'>
                         <div className='relative'>
@@ -97,12 +99,12 @@ const Product = () => {
                                     produk.slice(0, maxRowsToShow).map((produks) => (
                                         <tr key={produks._id}>
                                             <td className="text-center w-10 px-4 py-2 rounded-l-lg">{produks.product.productId}</td>
-                                            <td className="text-center max-w-[25px] h-auto px-4 py-2">
+                                            <td className="text-center max-w-[25px] px-4 py-2">
                                                 <img src={`url(${produks.product.image})`} alt={produks.product.name} className="w-20 h-20 rounded-sm mx-auto" />
                                             </td>
                                             <td className="text-center w-36 px-4 py-2 rounded-l-lg">{produks.product.kode_obat}</td>
                                             <td className="text-center px-4 py-2 w-96">{produks.product.name}</td>
-                                            <td className="text-center w-40 px-4 py-2">{produks.expired_at}</td>
+                                            <td className="text-center w-40 px-4 py-2">{moment(produks.expired_at).format("DD/MM/YYYY")}</td>
                                             <td className="text-center px-4 py-2">{produks.product.category.name}</td>
                                             <td className="text-center px-4 py-2">{produks.price}</td>
                                             <td className="text-center px-4 py-2">{produks.quantity_micro}</td>
