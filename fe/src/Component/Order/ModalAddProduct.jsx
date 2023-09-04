@@ -74,7 +74,7 @@ const ModalAddProduct = () => {
                 className="flex font-semibold"
                 type="button"
                 onClick={() => setShowModal(true)}
-            ><img className='mr-2' src='./assets/create_icon.svg'></img>
+            ><img className='mr-2' alt="create_icon" src='./assets/create_icon.svg'></img>
                 Add Product
             </button>
             {showModal ? (
