@@ -24,7 +24,7 @@
   // Menggunakan nama file pertama (misalnya, dalam kasus upload.array('image'))
       const imageFilename = uploadedFiles[0].filename;
       // Buat produk baru dengan mengaitkannya dengan kategori yang valid dan menyimpan nama file gambar
-      const newProduct = await Product.create({ name, image: "/uploads/" + imageFilename , category });
+      const newProduct = await Product.create({ name, image: "/backend/uploads/" + imageFilename , category });
       res.status(201).json(newProduct);
     } catch (err) {
       res.status(400).json({ message: err.message });

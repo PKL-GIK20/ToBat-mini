@@ -63,8 +63,8 @@ const upload = multer({
     }
   }
 });
+app.use(express.static('uploads'))
 app.use(upload.array('image'));
-app.use(express.static('uploads'));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -38,13 +38,8 @@ const ModalAddProduct = () => {
     };
     const handleImage = (event) => {
         const file = event.target.files[0];
-        console.log(file)
-        const formData = new FormData()
-        formData.append('files',file)
-        formData.append('files',{uri: URL.createObjectURL(file),type:file.type, name:file.name})
-        setImage(formData);
+        setImage(file);
     };
-
     useEffect(() => {
         fetchCategoryList();
     }, []);
