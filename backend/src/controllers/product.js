@@ -21,10 +21,14 @@
        return res.status(400).json({ message: 'No images uploaded' });
       }
 
-  // Menggunakan nama file pertama (misalnya, dalam kasus upload.array('image'))
       const imageFilename = uploadedFiles[0].filename;
-      // Buat produk baru dengan mengaitkannya dengan kategori yang valid dan menyimpan nama file gambar
-      const newProduct = await Product.create({ name, image: "/backend/uploads/" + imageFilename , category });
+      const url = req.protocol + "://" + req.get("host");
+
+      // Mendapatkan URL lengkap dengan host
+      const imageUrl = url + '/uploads/' + imageFilename;
+
+      // Buat produk baru dengan mengaitkannya dengan kategori yang valid dan menyimpan URL gambar
+      const newProduct = await Product.create({ name, image: imageUrl, category });
       res.status(201).json(newProduct);
     } catch (err) {
       res.status(400).json({ message: err.message });
