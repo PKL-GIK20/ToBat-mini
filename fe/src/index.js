@@ -7,9 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import './index.css';
 
 const options = {
-  position: positions.BOTTOM_CENTER,
-  timeout: 1000,
-  offset: '30px',
+  position: positions.TOP_CENTER,
+  timeout: 5000,
+  offset: '60px',
   transition: transitions.SCALE,
 };
 
