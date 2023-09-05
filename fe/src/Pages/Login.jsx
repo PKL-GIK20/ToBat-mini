@@ -78,13 +78,8 @@ const Login = () => {
           navigate("/home");
         }, 3000);
 
-        const userResponse = await axios.get("/api/user", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
       } catch (error) {
-        setError("Check your usernam and password again!");
+        setError("Check your username and password again!");
         setIsErrorShown(true);
         setLoginSuccess(false);
 
