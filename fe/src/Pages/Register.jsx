@@ -14,6 +14,8 @@ const Register = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [isErrorShown, setIsErrorShown] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function togglePasswordVisibility() {
     setIsPasswordVisible((prevState) => !prevState);
@@ -37,66 +39,82 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Clear the error message
     setError("");
+    setIsErrorShown(false);
 
-    if (!username) {
-      setError("Username must not be empty.");
+    if (!username || !password || !confirmPassword) {
+      setError("Please enter all fields.");
       setIsErrorShown(true);
-    } else if (!password) {
-      setError("Password must not be empty.");
-    //   setIsErrorShown(true);
-    } else if (!confirmPassword) {
-      setError("Confirm Password must not be empty.");
-    //   setIsErrorShown(true);
+      return; // Prevent further execution if fields are missing.
     } else if (!/^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/.test(username)) {
       setError(
         "Username must contain at least 5 characters, including letters and numbers."
       );
-    //   setIsErrorShown(true);
+      setIsErrorShown(true);
+      return;
     } else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/.test(password)
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$/.test(password)
     ) {
       setError(
         "Password must contain at least 8 characters, including uppercase, lowercase, numbers, and special symbols."
       );
-    //   setIsErrorShown(true);
+      setIsErrorShown(true);
+      return;
     } else if (password !== confirmPassword) {
       setError("Passwords do not match.");
       setIsErrorShown(true);
+      return;
     } else {
-      // If there are no errors, proceed to submit the form
+      setIsLoading(true);
+      // Create an object with the form data
       const formData = {
         username: username,
         password: password,
       };
-      setIsErrorShown(false);
 
-      const response = await axios.post("/api/register", formData);
-
-      setSubmitted(true);
-
-      if (response.status === 200) {
-        navigate("/");
-      } else {
-        setError(response.message);
-        // Set state untuk menampilkan pesan kesalahan
-        setIsErrorShown(true);
-      }
+      // Send the data to the Back-End using Axios
+      axios
+        .post("/api/register", formData)
+        .then((response) => {
+          setSubmitted(true);
+          setError(false);
+          setIsErrorShown(false);
+          setRegistrationSuccess(true);
+          setTimeout(() => {
+            setIsLoading(false);
+            navigate("/");
+          }, 3000);
+        })
+        .catch((error) => {
+          setError(true);
+        });
     }
-  };
-
-  const successMessage = () => {
-    return (
-      <div className="success" style={{ display: submitted ? "" : "none" }}>
-        <h1>User {username} successfully registered!!</h1>
-      </div>
-    );
   };
 
   const errorMessage = () => {
     if (isErrorShown && error) {
       alert.error(error);
+    }
+  };
+
+  const handleUsernameChange = () => {
+    setError("");
+    setIsErrorShown(false);
+  };
+
+  const handlePasswordChange = () => {
+    setError("");
+    setIsErrorShown(false);
+  };
+
+  const handleConfirmPasswordChange = () => {
+    setError("");
+    setIsErrorShown(false);
+  };
+
+  const successMessage = () => {
+    if (registrationSuccess) {
+      alert.success(`User ${username} successfully registered!`);
     }
   };
 
@@ -135,6 +153,7 @@ const Register = () => {
                 placeholder="Username"
                 value={username}
                 onChange={handleUsername}
+                onFocus={handleUsernameChange}
               />
               <label className="pt-3 tracking-wider text-[#898989]">
                 Password
@@ -146,6 +165,7 @@ const Register = () => {
                   placeholder="Password"
                   value={password}
                   onChange={handlePassword}
+                  onFocus={handlePasswordChange}
                 />
                 <button
                   className="absolute inset-y-0 right-0 flex items-center text-black pb-2"
@@ -200,6 +220,7 @@ const Register = () => {
                   placeholder="Confirm Password"
                   value={confirmPassword}
                   onChange={handleConfirmPassword}
+                  onFocus={handleConfirmPasswordChange}
                 />
                 <button
                   className="absolute inset-y-0 right-0 flex items-center text-black pb-2"
@@ -246,14 +267,19 @@ const Register = () => {
               </div>
             </div>
             <div className="flex justify-center">
-              <button
-                className="mt-[20px] text-xl text-white w-[40%] border-2 bg-primary hover:bg-hovercolor rounded-full py-1"
-                type="submit"
-                onClick={handleSubmit}
-              >
-                Register
-              </button>
+              {isLoading ? (
+                <div className="animate-spin rounded-full border-t-4 border-b-4 border-green-300 h-8 w-8"></div>
+              ) : (
+                <button
+                  className="mt-[20px] text-xl text-white w-[40%] border-2 bg-primary hover:bg-hovercolor rounded-full py-2 px-4"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  {isLoading ? "Loading..." : "Register"}
+                </button>
+              )}
             </div>
+
             <h3 className="mt-9 font-normal">
               Already have an account? <a href="/">Login Here</a>{" "}
             </h3>
