@@ -48,15 +48,15 @@ const Register = () => {
       return; // Prevent further execution if fields are missing.
     } else if (!/^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/.test(username)) {
       setError(
-        "Username must contain at least 5 characters, including letters and numbers."
+        "Username must contain at least 5 characters, including uppercase, lowercase, and numbers!"
       );
       setIsErrorShown(true);
       return;
     } else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8,}$/.test(password)
+      !/^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/.test(password)
     ) {
       setError(
-        "Password must contain at least 8 characters, including uppercase, lowercase, numbers, and special symbols."
+        "Password must contain at least 8 characters, including uppercase, lowercase, and numbers!"
       );
       setIsErrorShown(true);
       return;
