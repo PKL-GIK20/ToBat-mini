@@ -38,13 +38,8 @@ const ModalAddProduct = () => {
     };
     const handleImage = (event) => {
         const file = event.target.files[0];
-        console.log(file)
-        const formData = new FormData()
-        formData.append('files',file)
-        formData.append('files',{uri: URL.createObjectURL(file),type:file.type, name:file.name})
-        setImage(formData);
+        setImage(file);
     };
-
     useEffect(() => {
         fetchCategoryList();
     }, []);
@@ -79,7 +74,7 @@ const ModalAddProduct = () => {
                 className="flex font-semibold"
                 type="button"
                 onClick={() => setShowModal(true)}
-            ><img className='mr-2' src='./assets/create_icon.svg'></img>
+            ><img className='mr-2' alt="create_icon" src='./assets/create_icon.svg'></img>
                 Add Product
             </button>
             {showModal ? (

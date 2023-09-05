@@ -100,7 +100,7 @@ const Product = () => {
                                         <tr className='bg-[#F5F5F5] rounded-lg shadow-md' key={produks._id}>
                                             <td className="text-center w-10 px-4 py-2 rounded-l-lg">{produks.productId}</td>
                                             <td className="text-center max-w-[25px] px-4 py-2">
-                                                <img src={`url(${produks.image})`} alt={produks.name} className="w-20 h-20 rounded-sm mx-auto" />
+                                                <img src={produks.product.image} alt={produks.product.name} className="w-20 h-20 rounded-sm mx-auto" />
                                             </td>
                                             <td className="text-center w-36 px-4 py-2 rounded-l-lg">{produks.kode_obat}</td>
                                             <td className="text-center px-4 py-2 w-96">{produks.name}</td>
