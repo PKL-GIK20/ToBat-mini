@@ -45,12 +45,22 @@ const addStockProduct = async (req, res) => {
 // Controller untuk mendapatkan semua stok produk
 const getAllStockProds = async (req, res) => {
   try {
-    const stockProds = await StockProd.find().populate('product');
+    const stockProds = await StockProd.find()
+      .populate({
+        path: 'product',
+        populate: {
+          path: 'category',
+          select: 'name' // Memilih hanya field 'name' dari kategori
+        }
+      });
+
     res.status(200).json(stockProds);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 module.exports = {
   getAllStockProds,
