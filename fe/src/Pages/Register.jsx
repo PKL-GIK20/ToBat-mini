@@ -46,9 +46,9 @@ const Register = () => {
       setError("Please enter all fields.");
       setIsErrorShown(true);
       return; // Prevent further execution if fields are missing.
-    } else if (!/^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/.test(username)) {
+    } else if (username.length < 5) {
       setError(
-        "Username must contain at least 5 characters, including uppercase, lowercase, and numbers!"
+        "Username must contain at least 5 characters!"
       );
       setIsErrorShown(true);
       return;
