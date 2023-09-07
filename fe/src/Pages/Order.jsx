@@ -41,6 +41,22 @@ const Order = () => {
         }
     };
 
+    const deleteProduct = async (productId) => {
+        try {
+            const token = localStorage.getItem("token");
+            await axios.delete(`/api/product/${productId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            
+            // Update the products state by filtering out the deleted product
+            setProduct((prevProducts) => prevProducts.filter(product => product._id !== productId));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const maxRowsToShow = 4;
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastRow = currentPage * maxRowsToShow;
@@ -113,7 +129,9 @@ const Order = () => {
                                                     <button>
                                                         <ModalUpdateProduct />
                                                     </button>
-                                                    <img alt='trash' src='./assets/trash_icon.svg'></img>
+                                                    <button onClick={() => deleteProduct(product._id)} >
+                                                        <img alt='trash' src='./assets/trash_icon.svg'></img>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>

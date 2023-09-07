@@ -69,11 +69,12 @@ export default function Navbar() {
                     /></a>}
                 </li>
                 <li className="flex justify-center absolute inset-x-0 bottom-6">
+                    <a href="/" className="w-[30%] my-4 outline-none">
                     <img
-                        className="w-[20%] my-4"
                         src={"./assets/sign_out_icon.svg"}
                         alt="Icon"
                     />
+                    </a>
                 </li>
             </ul>
         </nav>
