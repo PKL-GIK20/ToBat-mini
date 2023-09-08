@@ -21,6 +21,16 @@ const Order = () => {
     const [products, setProduct] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     useEffect(() => {
         getProduct();
     }, []);
@@ -45,12 +55,12 @@ const Order = () => {
     const deleteProduct = async (productId) => {
         try {
             const token = localStorage.getItem("token");
-            await axios.delete(`/api/product/${productId}`, {
+            await axios.delete(`/api/stock/${productId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            
+
             // Update the products state by filtering out the deleted product
             setProduct((prevProducts) => prevProducts.filter(product => product._id !== productId));
         } catch (error) {
@@ -130,9 +140,25 @@ const Order = () => {
                                                     <button>
                                                         <ModalUpdateProduct />
                                                     </button>
-                                                    <button onClick={() => deleteProduct(product._id)} >
+                                                    <button onClick={openModal} >
                                                         <img alt='trash' src='./assets/trash_icon.svg'></img>
                                                     </button>
+                                                    {isModalOpen && (
+                                                        <div className="fixed inset-0 flex items-center justify-center z-50">
+                                                            <div className="bg-white p-5 rounded-lg shadow-md">
+                                                                <h3 className="text-xl font=semibold">Delete Product</h3>
+                                                                <p className="text-center">Are you sure you want to delete this product?</p>
+                                                                <div className="flex justify-center mt-4">
+                                                                    <button className=" text-gray-700 px-4 py-2 mr-2" onClick={closeModal}>
+                                                                        Cancel
+                                                                    </button>
+                                                                    <button className="bg-[#D94343] text-white px-4 py-2" onClick={deleteProduct}>
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </td>
                                         </tr>
