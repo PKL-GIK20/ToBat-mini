@@ -10,6 +10,5 @@ router.use("/product", verifyToken, require("./product"));
 router.use("/stock", verifyToken, require("./stock"));
 router.use("/category", verifyToken, require("./category"));
 router.use("/stockProduct", verifyToken, require("./stockProduct"));
-router.use("/penerimaan", verifyToken, require("./penerimaan"));
 
 module.exports = router;

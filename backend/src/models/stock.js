@@ -2,10 +2,46 @@ const mongoose = require('mongoose');
 
 const stockSchema = new mongoose.Schema({
   product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-  jumlah: { type: Number, required: true },
+  total_price: { type: Number, required: true, min:0 },
+  tax: { type: Number, default: 10 },
+  discount: { type: Number, required:true},
+  quantity_macro: { type: Number, required: true },
   satuan: { type: String, default: 'box' }, 
+  expired_at: { type: Date, required: true },
+  fix_price: { type: Number, required: false },
+
+
 });
 
 const Stock = mongoose.model('Stock', stockSchema);
 
 module.exports = Stock;
+
+const groupBatchByExpiredAt = async () => {
+  try {
+    const result = await Stock.aggregate([
+      {
+        $group: {
+          _id: { expired_at: '$expired_at' },
+          total_quantity_macro: { $sum: '$quantity_macro' },
+        },
+      },
+      {
+        $project: {
+          _id: 0, // Untuk menghilangkan _id dari hasil keluaran
+          expired_at: '$_id.expired_at',
+          total_quantity_macro: 1,
+        },
+      },
+      {
+        $sort: { expired_at: 1 }, 
+      },
+    ]);
+
+    console.log(result);
+  } catch (err) {
+    console.error('Error:', err);
+  }
+};
+
+groupBatchByExpiredAt();

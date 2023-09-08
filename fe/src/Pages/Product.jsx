@@ -4,17 +4,6 @@ import Navbar from "../Component/Navbar";
 import moment from 'moment';
 
 const Product = () => {
-    // const data = [
-    //     { id: 1, name: 'Oskadon SP', code:"T001", expired : '2002-02-22', price: '123123', qty : '12' ,category: 'Category X', image: './assets/tobat_logo_2.png' },
-    //     { id: 2, name: 'Product B', code:"T001" , category: 'Category Y', image: './assets/tobat_logo_2.png' },
-    //     { id: 3, name: 'Product B', code:"T001" , category: 'Category Y', image: './assets/tobat_logo_2.png' },
-    //     { id: 4, name: 'Product B', code:"T001" , category: 'Category Y', image: './assets/tobat_logo_2.png' },
-    //     { id: 5, name: 'Product B', code:"T001" , category: 'Category Y', image: './assets/tobat_logo_2.png' },
-    //     { id: 6, name: 'Product B', code:"T001" , category: 'Category Y', image: './assets/tobat_logo_2.png' },
-    //     { id: 7, name: 'Product B', code:"T001" , category: 'Category Y', image: './assets/tobat_logo_2.png' },
-    //     { id: 8, name: 'Product B', code:"T001" , category: 'Category Y', image: './assets/tobat_logo_2.png' },
-    //     { id: 9, name: 'Product B' ,code:"T001" , category: 'Category Y', image: './assets/tobat_logo_2.png' },
-    // ];
     const [produk, setProduk] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
 
@@ -44,7 +33,6 @@ const Product = () => {
     const indexOfLastRow = currentPage * maxRowsToShow;
     const indexOfFirstRow = indexOfLastRow - maxRowsToShow;
     const currentData = produk.slice(indexOfFirstRow, indexOfLastRow);
-    
 
     const handleNextPage = () => {
         if (indexOfLastRow < produk.length) {
@@ -96,17 +84,17 @@ const Product = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    currentData.map((produks) => (
-                                        <tr className='bg-[#F5F5F5] rounded-lg shadow-md' key={produks._id}>
-                                            <td className="text-center w-10 px-4 py-2 rounded-l-lg">{produks.product._Id}</td>
+                                    currentData.map((produks, index) => (
+                                        <tr className='bg-[#F5F5F5] rounded-lg shadow-md' key={index}>
+                                            <td className="text-center w-10 px-4 py-2 rounded-l-lg">{index + 1}</td>
                                             <td className="text-center max-w-[25px] px-4 py-2">
-                                                <img src={produks.product.image} alt={produks.product.name} className="w-20 h-20 rounded-sm mx-auto" />
+                                                <img src={produks.stock.product.image} alt={produks.stock.product.name} className="w-20 h-20 rounded-sm mx-auto" />
                                             </td>
-                                            <td className="text-center w-36 px-4 py-2 rounded-l-lg">{produks.product.kode_obat}</td>
-                                            <td className="text-center px-4 py-2 w-96">{produks.product.name}</td>
-                                            <td className="text-center w-40 px-4 py-2">{produks.expired_at}</td>
-                                            <td className="text-center px-4 py-2">{produks.product.category.name}</td>
-                                            <td className="text-center px-4 py-2">{produks.price}</td>
+                                            <td className="text-center w-36 px-4 py-2 rounded-l-lg">{produks.stock.product.kode_obat}</td>
+                                            <td className="text-center px-4 py-2 w-96">{produks.stock.product.name}</td>
+                                            <td className="text-center w-40 px-4 py-2">{moment(produks.stock.expired_at).format("YYYY-MM-DD")}</td>
+                                            <td className="text-center px-4 py-2">{produks.stock.product.category.name}</td>
+                                            <td className="text-center px-4 py-2">{produks.stock.fix_price}</td>
                                             <td className="text-center px-4 py-2 rounded-r-lg">{produks.quantity_micro}</td>
                                         </tr>
                                     ))
@@ -138,10 +126,8 @@ const Product = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
     );
 };
 
