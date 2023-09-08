@@ -5,7 +5,7 @@
         "description" : "API documentation for Apllication ToBat",
         "version" : "1.0.0"
     },
-    "host" : "localhost:5000",
+    "host" : "localhost:5001",
     "tags" : [
         {
             "name" : "Users",
@@ -13,19 +13,19 @@
         },
         {
             "name" : "Product",
-            "description" : "Endpoints that handle CRUD on journal"
+            "description" : "Endpoints that handle CRUD on Product Obat"
          },
          {
             "name" : "Category",
-            "description" : "Endpoints that handle CRUD on event and user interaction with event"
+            "description" : "Endpoint that CRUD the category of product"
          },
          {
             "name" : "Stock",
-            "description" : "Endpoints that handle user and auth"
+            "description" : "Endpoints that handle for read a stock"
         },
         {
             "name" : "Penerimaan",
-            "description" : "Endpoints that handle CRUD on journal"
+            "description" : "Endpoints that handle CRUD on transaction receipt the stock of obat from supplier"
          },
          {
             "name" : "Stock Product",
@@ -125,17 +125,238 @@
                 }
             },
 
-            "/api/journal/create" : {
-                "post" : {
-                    "summary" : "Create a new journal.",
-                    "tags" : ["Journals"],
+            "/api/user/:username" : {
+                "get" : {
+                    "summary" : "get user with username.",
+                    "tags" : ["Users"],
                     "consumes" : [
                         "application/json"
                     ],
                     "produces" : [
                         "application/json"
                     ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          },
+                          {
+                            "in": "path",
+                            "username": "username",  
+                            "required": true,
+                            "schema":{
+                              "type": "string"
+                            },
+                            "description": "username"
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/user/all/username" : {
+                "get" : {
+                    "summary" : "get all user with username.",
+                    "tags" : ["Users"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/user/all/users" : {
+                "get" : {
+                    "summary" : "get all user.",
+                    "tags" : ["Users"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/user" : {
+                "get" : {
+                    "summary" : "get all user profile.",
+                    "tags" : ["Users"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/user/update" : {
+                "patch" : {
+                    "summary" : "update user profile.",
+                    "tags" : ["Users"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          },
+                          {
+                            "name" : "body",
+                            "in" : "body",
+                            "description" : "User object that needs to be added create an account",
+                            "required" : true,
+                            "schema" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "username" : {
+                                        "type" : "string",
+                                        "minLength" : 9
+                                    },
+                                    "password" : {
+                                        "type" : "string"
+                                    }
+                                }
+                                
+                            }
+                        }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/user/delete" : {
+                "delete" : {
+                    "summary" : "delete user",
+                    "tags" : ["Users"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
 
+            
+            "/api/product/add" : { 
+                "post" : {
+                    "summary" : "Create A new Product",
+                    "tags" : ["Product"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
                     "parameters" : [
                         {
                             "name": "Authorization",
@@ -149,25 +370,29 @@
                         {
                             "name" : "body",
                             "in" : "body",
-                            "description" : "User create journal",
+                            "description" : "User create new product",
                             "required" : true,
                             "schema" : {
                                 "type" : "object",
                                 "properties" : {
-                                    "grid" : {
-                                        "type": "object",
-                                        "properties" :{
-                                            "question" :{
-                                                "type" : "string"
-                                            },
-                                            "answer" :{
-                                                "type" : "string"
-                                            }
-                                        }
+                                    "name": { 
+                                        "type": "string", 
+                                        "required": true 
                                     },
-                                
-                                    "myfeel" : {
-                                        "type" : "string"
+                                    "image": { 
+                                        "type": "string" 
+                                    }, 
+                                    "category": { 
+                                        "type": "mongoose.Schema.Types.ObjectId", 
+                                        "ref": "Category", 
+                                        "required": true 
+                                    },
+                                    "kode_obat": { 
+                                        "type": "string" 
+                                    },
+                                    "created_at": { 
+                                        "type": "Date", 
+                                        "default": "Date.now" 
                                     }
                                 }
                                 
@@ -176,12 +401,511 @@
                     ],
                     "responses" : {
                         "201" : {
-                            "description" : "Successfully create new Journal"
+                            "description" : "Successfully create new product"
                         },
                         "400" : {
                             "description" : "Bad request"
                         }
                     }
+                  
+                }
+            },
+
+            "/api/product" : {
+                "get" : {
+                    "summary" : "Get all product.",
+                    "tags" : ["Product"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+
+            "/api/stock" : {
+                "get" : {
+                    "summary" : "Get all stock of product.",
+                    "tags" : ["Stock"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          },
+                          {
+                            "name" : "body",
+                            "in" : "body",
+                            "description" : "User create new stock",
+                            "required" : true,
+                            "schema" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "product": { 
+                                        "type": "mongoose.Schema.Types.ObjectId", 
+                                        "ref": "Product", 
+                                        "required": true 
+                                    },
+                                    "jumlah": { 
+                                        "type": "Number", 
+                                        "required": true 
+                                    },
+                                    "satuan": { 
+                                        "type": "String", 
+                                        "default": "box" 
+                                    }
+                                }
+                                
+                            }
+                        }
+                    ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/stock/add" : {
+                "post" : {
+                    "summary" : "post new stock of product.",
+                    "tags" : ["Stock"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "Successfully create new stock"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+
+            "/api/category" : {
+                "get" : {
+                    "summary" : "Get all category.",
+                    "tags" : ["Category"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/category/add" : {
+                "post" : {
+                    "summary" : "post new category of product.",
+                    "tags" : ["Category"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                        },
+                          {
+                            "name" : "body",
+                            "in" : "body",
+                            "description" : "User create new category",
+                            "required" : true,
+                            "schema" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "name": { 
+                                        "type": "string", 
+                                        "required": true 
+                                    },
+                                    "kode": { 
+                                        "type": "string", 
+                                        "unique": true, 
+                                        "sparse": true 
+                                    }
+                                }
+                            }
+                        }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "Successfully create new category"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/category/:id" : {
+                "put" : {
+                    "summary" : "update category of product.",
+                    "tags" : ["Category"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                        },
+                          {
+                            "name" : "body",
+                            "in" : "body",
+                            "description" : "User update category",
+                            "required" : true,
+                            "schema" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "name": { 
+                                        "type": "string", 
+                                        "required": true 
+                                    },
+                                    "kode": { 
+                                        "type": "string", 
+                                        "unique": true, 
+                                        "sparse": true 
+                                    }
+                                }
+                            }
+                        }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "Successfully create Update category"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/category/delete/:id" : {
+                "delete" : {
+                    "summary" : "delete category of product.",
+                    "tags" : ["Category"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                        },
+                        {
+                            "in": "path",
+                            "kode": "id",  
+                            "required": true,
+                            "schema":{
+                              "type": "string"
+                            },
+                            "description": "Category ID"
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "Successfully delete category"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/penerimaan" : {
+                "get" : {
+                    "summary" : "Get all receipt.",
+                    "tags" : ["Penerimaan"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/penerimaan/add" : {
+                "post" : {
+                    "summary" : "Create A new receipt Obat from Supplier",
+                    "tags" : ["Penerimaan"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          },
+                        {
+                            "name" : "body",
+                            "in" : "body",
+                            "description" : "User create new Receipt from supplier",
+                            "required" : true,
+                            "schema" : {
+                                "type" : "object",
+                                "properties" : {
+                                     "stock": { 
+                                        "type": "mongoose.Schema.Types.ObjectId", 
+                                        "ref": "Stock", 
+                                        "required": true 
+                                    },
+                                    "total_price": { 
+                                        "type": "Number", 
+                                        "required": true 
+                                    },
+                                    "tax": { 
+                                        "type": 
+                                        "Number", 
+                                        "default": 10 
+                                    },
+                                    "discount": { 
+                                        "type": "Number", 
+                                        "default": 0 
+                                    },
+                                    "quantity_macro": { 
+                                        "type": "Number", 
+                                        "required": true 
+                                    }
+                                }
+                                
+                            }
+                        }
+                    ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "Successfully receipt product"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+
+            "/api/stockProduct" : {
+                "get" : {
+                    "summary" : "Get all stock per product.",
+                    "tags" : ["Stock Product"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/stockProduct/add" : {
+                "post" : {
+                    "summary" : "Create A new receipt Obat from Supplier",
+                    "tags" : ["Stock Product"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          },
+                        {
+                            "name" : "body",
+                            "in" : "body",
+                            "description" : "User create new Receipt from supplier",
+                            "required" : true,
+                            "schema" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "penerimaan": { 
+                                        "type": "mongoose.Schema.Types.ObjectId", 
+                                        "ref": "Penerimaan", 
+                                        "required": true 
+                                    },
+                                    "product": { 
+                                        "type": "mongoose.Schema.Types.ObjectId", 
+                                        "ref": "Product", 
+                                        "required": true 
+                                    },
+                                    "expired_at": { 
+                                        "type": "Date", 
+                                        "required": true 
+                                    },
+                                    "quantity_micro": { 
+                                        "type": "Number", 
+                                        "required": true 
+                                    },
+                                    "price": { 
+                                        "type": "Number", 
+                                        "required": true 
+                                    } 
+                                }
+                                
+                            }
+                        }
+                    ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "Successfully Create A new receipt Obat from Supplier"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
                 }
             },
 

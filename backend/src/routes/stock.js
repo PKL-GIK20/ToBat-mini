@@ -4,7 +4,7 @@ const stockController = require('../controllers/stock');
 
 router.get('/', stockController.getAllStocks);
 
-router.post('/', stockController.addStock);
+router.post('/add', stockController.addStock);
 
 
 module.exports = router;

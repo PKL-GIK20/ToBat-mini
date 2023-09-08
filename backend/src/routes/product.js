@@ -13,7 +13,7 @@ router.post('/add', productController.addProduct);
 router.put('/:id', productController.updateProductById);
 
 // Rute untuk menghapus produk berdasarkan ID
-router.delete('/:id', productController.deleteProductById);
+router.delete('/delete/:id', productController.deleteProductById);
 
 // Controller lainnya sesuai kebutuhan, seperti mengubah data produk, atau menghapus produk.
 

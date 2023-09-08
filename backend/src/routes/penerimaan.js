@@ -6,6 +6,6 @@ const penerimaanController = require('../controllers/penerimaan');
 router.get('/', penerimaanController.getAllPenerimaan);
 
 // Route untuk menambahkan penerimaan produk baru
-router.post('/', penerimaanController.addPenerimaan);
+router.post('/add', penerimaanController.addPenerimaan);
 
 module.exports = router;
