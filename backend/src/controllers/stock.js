@@ -4,7 +4,14 @@ const Product = require('../models/product');
 // Menampilkan semua data stock
 const getAllStocks = async (req, res) => {
   try {
-    const stocks = await Stock.find().populate('product', 'name'); // Menggunakan populate untuk mendapatkan data produk terkait (hanya field 'name')
+    const stocks = await Stock.find()      
+    .populate({
+        path: 'product',
+        populate: {
+          path: 'category',
+          select: 'name' // Memilih hanya field 'name' dari kategori
+        }
+      }); // Menggunakan populate untuk mendapatkan data produk terkait (hanya field 'name')
     res.json(stocks);
   } catch (err) {
     res.status(500).json({ message: err.message });
