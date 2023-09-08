@@ -3,6 +3,7 @@ import axios from "../axiosConfig";
 import Navbar from "../Component/Navbar";
 import ModalAddProduct from '../Component/Order/ModalAddProduct';
 import ModalUpdateProduct from '../Component/Order/ModalUpdateProduct';
+import ModalBook from '../Component/Order/ModalBook'
 
 
 const Order = () => {
@@ -27,7 +28,7 @@ const Order = () => {
     const getProduct = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await axios.get("/api/product", {
+            const response = await axios.get("/api/stock", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -112,18 +113,18 @@ const Order = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    currentData.map((product) => (
-                                        <tr className='bg-[#F5F5F5] rounded-md shadow-md' key={product._id}>
-                                            <td className="text-center w-10 px-4 py-2 rounded-l-lg">{product.productId}</td>
+                                    currentData.map((stock) => (
+                                        <tr className='bg-[#F5F5F5] rounded-md shadow-md' key={stock.product._id}>
+                                            <td className="text-center w-10 px-4 py-2 rounded-l-lg">{stock.stockId}</td>
                                             <td className="text-center max-w-[25px] h-auto px-4 py-2">
-                                                <img src={product.image} className="w-20 h-20 rounded-sm mx-auto" />
+                                                <img src={stock.product.image} className="w-20 h-20 rounded-sm mx-auto" />
                                             </td>
-                                            <td className="text-center w-36 px-4 py-2 rounded-l-lg">{product.kode_obat}</td>
-                                            <td className="text-center px-4 py-2 max-w-[200px]">{product.name}</td>
-                                            <td className="text-center px-4 py-2">{product.category.name}</td>
+                                            <td className="text-center w-36 px-4 py-2 rounded-l-lg">{stock.product.kode_obat}</td>
+                                            <td className="text-center px-4 py-2 max-w-[200px]">{stock.product.name}</td>
+                                            <td className="text-center px-4 py-2">{stock.product.category.name}</td>
                                             <td className=" relative text-center items-center px-4 py-2 rounded-r-lg">
-                                                <button className=" text-white px-2 py-1 rounded">
-                                                    <img alt='booknow' src='./assets/book_now_button.svg'></img>
+                                                <button>
+                                                    <ModalBook />
                                                 </button>
                                                 <div className='absolute flex top-0 right-2 m-2'>
                                                     <button>
