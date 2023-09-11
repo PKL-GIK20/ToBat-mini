@@ -147,9 +147,10 @@ const ModalAddStock = () => {
                                         Tax (%)
                                     </label>
                                         <input
-                                            disabled
+                                            required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
-                                            placeholder="10"
+                                            placeholder="Input Product Tax"
+                                            value={tax}
                                             onChange={(e) => setTax(e.target.value)} />
                                 </div>
                                 <div className="w-full lg:w-1/2 px-4 mb-4">
