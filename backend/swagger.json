@@ -511,7 +511,7 @@
                 }
             },
             "/api/product/delete/:id" : {
-                "get" : {
+                "delete" : {
                     "summary" : "Get all product.",
                     "tags" : ["Product"],
                     "consumes" : [
