@@ -9,6 +9,7 @@ const stockSchema = new mongoose.Schema({
   satuan: { type: String, default: 'box' }, 
   expired_at: { type: Date, required: true },
   fix_price: { type: Number, required: false },
+  created_at: { type: Date, default: Date.now },
 
 
 });
