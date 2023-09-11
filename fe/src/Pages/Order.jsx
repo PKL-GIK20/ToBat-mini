@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from "../axiosConfig";
 import Navbar from "../Component/Navbar";
-import ModalAddProduct from '../Component/Order/ModalAddProduct';
+import ModalAddStock from '../Component/Order/ModalAddStock';
 import ModalUpdateProduct from '../Component/Order/ModalUpdateProduct';
-import ModalBook from '../Component/Order/ModalBook'
+import ModalBook from '../Component/Order/ModalBook';
 
 
 const Order = () => {
@@ -93,7 +93,7 @@ const Order = () => {
                 <h1 className='text-[50px] font-montserrat mb-7'>MEDICINE RECEIPT TRANSACTION</h1>
                 <div className="flex flex-col items-center w-[90%] bg-white px-5 py-3 shadow-md font-montserrat rounded-md">
                     <div className='flex justify-between w-[100%]'>
-                        <ModalAddProduct />
+                        <ModalAddStock />
                         <div className='relative'>
                             <input className='rounded-full p-1 w-[280px] px-9 border'
                                 placeholder='Search product name here...'
@@ -134,7 +134,7 @@ const Order = () => {
                                             <td className="text-center px-4 py-2">{stock.product.category.name}</td>
                                             <td className=" relative text-center items-center px-4 py-2 rounded-r-lg">
                                                 <button>
-                                                    <ModalBook />
+                                                    <ModalBook stockId={stock._id} />
                                                 </button>
                                                 <div className='absolute flex top-0 right-2 m-2'>
                                                     <button>
