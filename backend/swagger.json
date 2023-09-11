@@ -7,11 +7,11 @@
     },
     "host" : "localhost:5001",
     "tags" : [
-        {
+         {
             "name" : "Users",
             "description" : "Endpoints that handle user and auth"
-        },
-        {
+         },
+         {
             "name" : "Product",
             "description" : "Endpoints that handle CRUD on Product Obat"
          },
@@ -22,10 +22,6 @@
          {
             "name" : "Stock",
             "description" : "Endpoints that handle for read a stock"
-        },
-        {
-            "name" : "Penerimaan",
-            "description" : "Endpoints that handle CRUD on transaction receipt the stock of obat from supplier"
          },
          {
             "name" : "Stock Product",
@@ -410,7 +406,6 @@
                   
                 }
             },
-
             "/api/product" : {
                 "get" : {
                     "summary" : "Get all product.",
@@ -443,10 +438,123 @@
                   
                 }
             },
+            "/api/product/:id" : { 
+                "put" : {
+                    "summary" : "update Product",
+                    "tags" : ["Product"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          },
+                          {
+                            "in": "path",
+                            "kode": "id",  
+                            "required": true,
+                            "schema":{
+                              "type": "string"
+                            },
+                            "description": "Product ID"
+                          },
+                        {
+                            "name" : "body",
+                            "in" : "body",
+                            "description" : "User create new product",
+                            "required" : true,
+                            "schema" : {
+                                "type" : "object",
+                                "properties" : {
+                                    "name": { 
+                                        "type": "string", 
+                                        "required": true 
+                                    },
+                                    "image": { 
+                                        "type": "string" 
+                                    }, 
+                                    "category": { 
+                                        "type": "mongoose.Schema.Types.ObjectId", 
+                                        "ref": "Category", 
+                                        "required": true 
+                                    },
+                                    "kode_obat": { 
+                                        "type": "string" 
+                                    },
+                                    "created_at": { 
+                                        "type": "Date", 
+                                        "default": "Date.now" 
+                                    }
+                                }
+                                
+                            }
+                        }
+                    ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "Successfully update product"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
+            "/api/product/delete/:id" : {
+                "delete" : {
+                    "summary" : "Get all product.",
+                    "tags" : ["Product"],
+                    "consumes" : [
+                        "application/json"
+                    ],
+                    "produces" : [
+                        "application/json"
+                    ],
+                    "parameters" : [
+                        {
+                            "name": "Authorization",
+                            "description": "Bearer token",
+                            "in" : "header",
+                            "required": true,
+                            "schema": {
+                              "type": "string"
+                            }
+                          },
+                          {
+                            "in": "path",
+                            "kode": "id",  
+                            "required": true,
+                            "schema":{
+                              "type": "string"
+                            },
+                            "description": "Product ID"
+                          }
+                        ],
+                    "responses" : {
+                        "201" : {
+                            "description" : "OK"
+                        },
+                        "400" : {
+                            "description" : "Bad request"
+                        }
+                    }
+                  
+                }
+            },
 
-            "/api/stock" : {
-                "get" : {
-                    "summary" : "Get all stock of product.",
+            "/api/stock/add" : {
+                "post" : {
+                    "summary" : "add new stock of product.",
                     "tags" : ["Stock"],
                     "consumes" : [
                         "application/json"
@@ -477,13 +585,39 @@
                                         "ref": "Product", 
                                         "required": true 
                                     },
-                                    "jumlah": { 
+                                    "total_price": { 
                                         "type": "Number", 
-                                        "required": true 
+                                        "required": true, 
+                                        "min":0 
+                                    },
+                                    "tax": { 
+                                        "type": "Number", 
+                                        "default": 10 
+                                    },
+                                    "discount": { 
+                                        "type": "Number", 
+                                        "required":true
+                                    },
+                                    "quantity_macro": { 
+                                        "type": "Number", 
+                                        "required": 
+                                        true 
                                     },
                                     "satuan": { 
-                                        "type": "String", 
-                                        "default": "box" 
+                                        "type": "string", 
+                                        "default": "box"
+                                    }, 
+                                    "expired_at": { 
+                                        "type": "Date", 
+                                        "required": true 
+                                    },
+                                    "fix_price": { 
+                                        "type": "Number", 
+                                        "required": false 
+                                    },
+                                    "created_at": { 
+                                        "type": "Date", 
+                                        "default": "Date.now" 
                                     }
                                 }
                                 
@@ -492,7 +626,7 @@
                     ],
                     "responses" : {
                         "201" : {
-                            "description" : "OK"
+                            "description" : "Successfully add stock of product"
                         },
                         "400" : {
                             "description" : "Bad request"
@@ -501,9 +635,9 @@
                   
                 }
             },
-            "/api/stock/add" : {
-                "post" : {
-                    "summary" : "post new stock of product.",
+            "/api/stock" : {
+                "get" : {
+                    "summary" : "get all stock of product.",
                     "tags" : ["Stock"],
                     "consumes" : [
                         "application/json"
@@ -524,7 +658,7 @@
                         ],
                     "responses" : {
                         "201" : {
-                            "description" : "Successfully create new stock"
+                            "description" : "Successfully get all stock of product"
                         },
                         "400" : {
                             "description" : "Bad request"
@@ -711,104 +845,6 @@
                   
                 }
             },
-            "/api/penerimaan" : {
-                "get" : {
-                    "summary" : "Get all receipt.",
-                    "tags" : ["Penerimaan"],
-                    "consumes" : [
-                        "application/json"
-                    ],
-                    "produces" : [
-                        "application/json"
-                    ],
-                    "parameters" : [
-                        {
-                            "name": "Authorization",
-                            "description": "Bearer token",
-                            "in" : "header",
-                            "required": true,
-                            "schema": {
-                              "type": "string"
-                            }
-                          }
-                        ],
-                    "responses" : {
-                        "201" : {
-                            "description" : "OK"
-                        },
-                        "400" : {
-                            "description" : "Bad request"
-                        }
-                    }
-                  
-                }
-            },
-            "/api/penerimaan/add" : {
-                "post" : {
-                    "summary" : "Create A new receipt Obat from Supplier",
-                    "tags" : ["Penerimaan"],
-                    "consumes" : [
-                        "application/json"
-                    ],
-                    "produces" : [
-                        "application/json"
-                    ],
-                    "parameters" : [
-                        {
-                            "name": "Authorization",
-                            "description": "Bearer token",
-                            "in" : "header",
-                            "required": true,
-                            "schema": {
-                              "type": "string"
-                            }
-                          },
-                        {
-                            "name" : "body",
-                            "in" : "body",
-                            "description" : "User create new Receipt from supplier",
-                            "required" : true,
-                            "schema" : {
-                                "type" : "object",
-                                "properties" : {
-                                     "stock": { 
-                                        "type": "mongoose.Schema.Types.ObjectId", 
-                                        "ref": "Stock", 
-                                        "required": true 
-                                    },
-                                    "total_price": { 
-                                        "type": "Number", 
-                                        "required": true 
-                                    },
-                                    "tax": { 
-                                        "type": 
-                                        "Number", 
-                                        "default": 10 
-                                    },
-                                    "discount": { 
-                                        "type": "Number", 
-                                        "default": 0 
-                                    },
-                                    "quantity_macro": { 
-                                        "type": "Number", 
-                                        "required": true 
-                                    }
-                                }
-                                
-                            }
-                        }
-                    ],
-                    "responses" : {
-                        "201" : {
-                            "description" : "Successfully receipt product"
-                        },
-                        "400" : {
-                            "description" : "Bad request"
-                        }
-                    }
-                  
-                }
-            },
 
             "/api/stockProduct" : {
                 "get" : {
@@ -870,28 +906,23 @@
                             "schema" : {
                                 "type" : "object",
                                 "properties" : {
-                                    "penerimaan": { 
+                                    "stock": { 
                                         "type": "mongoose.Schema.Types.ObjectId", 
-                                        "ref": "Penerimaan", 
+                                        "ref": "Stock", 
                                         "required": true 
                                     },
-                                    "product": { 
-                                        "type": "mongoose.Schema.Types.ObjectId", 
-                                        "ref": "Product", 
-                                        "required": true 
-                                    },
-                                    "expired_at": { 
-                                        "type": "Date", 
+                                    "available_macro": { 
+                                        "type": "Number", 
                                         "required": true 
                                     },
                                     "quantity_micro": { 
                                         "type": "Number", 
-                                        "required": true 
+                                        "required": false 
                                     },
                                     "price": { 
                                         "type": "Number", 
-                                        "required": true 
-                                    } 
+                                        "required": false 
+                                    }
                                 }
                                 
                             }
@@ -906,183 +937,6 @@
                         }
                     }
                   
-                }
-            },
-
-            "/api/journal/all" : {
-                "get" : {
-                    "summary" : "Get all journal",
-                    "tags" : ["Journals"],
-                    "consumes" : [
-                        "application/json"
-                    ],
-                    "produces" : [
-                        "application/json"
-                    ],
-
-                    "parameters" : [
-                        {
-                            "name": "Authorization",
-                            "description": "Bearer token",
-                            "in" : "header",
-                            "required": true,
-                            "schema": {
-                              "type": "string"
-                            }
-                          }
-                        ],
-                    "responses" : {
-                        "201" : {
-                            "description" : "OK"
-                        },
-                        "400" : {
-                            "description" : "Bad request"
-                        }
-                    }
-                }
-            },
-
-
-            "/api/journal/date/:date" : {
-                "get" : {
-                    "summary" : "Get all journal by date",
-                    "tags" : ["Journals"],
-                    "consumes" : [
-                        "application/json"
-                    ],
-                    "produces" : [
-                        "application/json"
-                    ],
-
-                    "parameters" : [
-                        {
-                            "name": "Authorization",
-                            "description": "Bearer token",
-                            "in" : "header",
-                            "required": true,
-                            "schema": {
-                              "type": "string"
-                            }
-                          },
-                          {
-                          "in": "query",
-                          "name": "Path Variable",
-                          "description": "Date",
-                          "pattern": "^(3[01]|[12][0-9]|0[1-9])-(1[0-2]|0[1-9])-[0-9]{4}$"
-                          }
-                        ],
-                    "responses" : {
-                        "200" : {
-                            "description" : "OK"
-                        },
-                        "400" : {
-                            "description" : "Bad request"
-                        }
-                    }
-                }
-            },
-
-            "/api/delete/:id" : {
-                "delete" : {
-                    "summary" : "delete journal",
-                    "tags" : ["Journals"],
-                    "consumes" : [
-                        "application/json"
-                    ],
-                    "produces" : [
-                        "application/json"
-                    ],
-
-                    "parameters" : [
-                        {
-                            "name": "Authorization",
-                            "description": "Bearer token",
-                            "in" : "header",
-                            "required": true,
-                            "schema": {
-                              "type": "string"
-                            }
-                          },
-                          {
-                            "in": "path",
-                            "name": "id",  
-                            "required": true,
-                            "schema":{
-                              "type": "integer",
-                              "minimum": 1
-                            },
-                            "description": "Journal ID"
-                          }
-                        ],
-                    "responses" : {
-                        "200" : {
-                            "description" : "Successfully Delete your Journal"
-                        },
-                        "400" : {
-                            "description" : "Bad request"
-                        }
-                    }
-                }
-            },
-
-
-            "/api/update/:id" : {
-                "patch" : {
-                    "summary" : "Update journal",
-                    "tags" : ["Journals"],
-                    "consumes" : [
-                        "application/json"
-                    ],
-                    "produces" : [
-                        "application/json"
-                    ],
-
-                    "parameters" : [
-                        {
-                            "name": "Authorization",
-                            "description": "Bearer token",
-                            "in" : "header",
-                            "required": true,
-                            "schema": {
-                              "type": "string"
-                            }
-                          },
-                        {
-                            "name" : "body",
-                            "in" : "body",
-                            "description" : "User create journal",
-                            "required" : true,
-                            "schema" : {
-                                "type" : "object",
-                                "properties" : {
-                                    "grid" : {
-                                        "type": "object",
-                                        "properties" :{
-                                            "question" :{
-                                                "type" : "string"
-                                            },
-                                            "answer" :{
-                                                "type" : "string"
-                                            }
-                                        }
-                                    },
-                                
-                                    "myfeel" : {
-                                        "type" : "string"
-                                    }
-                                }
-                                
-                            }
-                        }
-                    ],
-                    "responses" : {
-                        "200" : {
-                            "description" : "Successfully update your Journal"
-                        },
-                        "400" : {
-                            "description" : "Bad request"
-                        }
-                    }
                 }
             }
         }
