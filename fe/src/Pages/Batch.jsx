@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from "../axiosConfig";
 import Navbar from "../Component/Navbar";
-
+import moment from 'moment';
 
 const Batch = () => {
-    const data = [
-        { id: 1, code:"T001", name: 'Oskadon SP', category: 'Category X', qtyma : "12", qtymi : "120", pricema: "12.000", pricemi: "120.000", expired_at: "31/12/2023", buy_at: "31/12/2023" },
-        { id: 2, code:"T002", name: 'Oskadon SD', category: 'Category X', qtyma : "12", qtymi : "120", pricema: "12.000", pricemi: "120.000", expired_at: "31/12/2023", buy_at: "31/12/2023" },
-    ];
+    // const data = [
+    //     { id: 1, code:"T001", name: 'Oskadon SP', category: 'Category X', qtyma : "12", qtymi : "120", pricema: "12.000", pricemi: "120.000", expired_at: "31/12/2023", buy_at: "31/12/2023" },
+    //     { id: 2, code:"T002", name: 'Oskadon SD', category: 'Category X', qtyma : "12", qtymi : "120", pricema: "12.000", pricemi: "120.000", expired_at: "31/12/2023", buy_at: "31/12/2023" },
+    // ];
     const [produk, setProduk] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
 
@@ -81,7 +81,7 @@ const Batch = () => {
                                 </tr>
                             </thead>
                             <tbody className=''>
-                                {data.length === 0 ? (
+                                {currentData.length === 0 ? (
                                     <div className="absolute flex justify-center items-center w-[90%]">
                                         <div className="w-full mb-10 rounded-lg bg-white p-3">
                                             <p className="font-montserrat text-xl font-semibold mb-4 text-center">
@@ -90,18 +90,18 @@ const Batch = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    data.slice(0, maxRowsToShow).map((produks) => (
+                                    currentData.map((produks, index) => (
                                         <tr className='bg-[#F5F5F5] rounded-lg shadow-md' key={produks._id}>
-                                            <td className="text-center px-4 py-2 rounded-l-lg">{produks.id}</td>
-                                            <td className="text-center px-4 py-2">{produks.code}</td>
-                                            <td className="text-center px-4 py-2">{produks.name}</td>
-                                            <td className="text-center px-4 py-2">{produks.category}</td>
-                                            <td className="text-center px-4 py-2">{produks.qtyma}</td>
-                                            <td className="text-center px-4 py-2">{produks.qtymi}</td>
-                                            <td className="text-center px-4 py-2">{produks.pricema}</td>
-                                            <td className="text-center px-4 py-2">{produks.pricemi}</td>
-                                            <td className="text-center px-4 py-2">{produks.expired_at}</td>
-                                            <td className="text-center px-4 py-2 rounded-r-lg">{produks.buy_at}</td>
+                                            <td className="text-center px-4 py-2 rounded-l-lg">{index + indexOfFirstRow + 1}</td>
+                                            <td className="text-center px-4 py-2">{produks.stock.product.kode_obat}</td>
+                                            <td className="text-center px-4 py-2">{produks.stock.product.name}</td>
+                                            <td className="text-center px-4 py-2">{produks.stock.product.category.name}</td>
+                                            <td className="text-center px-4 py-2">{produks.available_macro}</td>
+                                            <td className="text-center px-4 py-2">{produks.quantity_micro}</td>
+                                            <td className="text-center px-4 py-2">Rp {produks.stock.fix_price}</td>
+                                            <td className="text-center px-4 py-2">Rp {produks.price}</td>
+                                            <td className="text-center px-4 py-2">{moment(produks.stock.expired_at).format("YYYY-MM-DD")}</td>
+                                            <td className="text-center px-4 py-2 rounded-r-lg">{moment(produks.stock.created_at).format("YYYY-MM-DD")}</td>
                                         </tr>
                                     ))
                                 )}
@@ -121,7 +121,7 @@ const Batch = () => {
                                     <img alt='prev' className='w-[25px]' src='./assets/prev_icon.svg'></img>
                                 </button>
                             )}
-                            {indexOfLastRow < data.length && (
+                            {indexOfLastRow < currentData.length && (
                                 <button
                                     className="mt-2 px-1 py-2 rounded"
                                     onClick={handleNextPage}

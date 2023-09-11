@@ -34,7 +34,7 @@ const ModalAddStock = () => {
 
         try {
             const token = localStorage.getItem("token");
-            await axios.post('/api/stock', formData, {
+            await axios.post('/api/stock/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ const ModalAddStock = () => {
                                 </div>
                                 <div className="w-full lg:w-1/2 px-4 mb-4">
                                     <label className="flex justify-start text-black text-sm mt-4 mb-1">
-                                        Price
+                                        Price (Rp)
                                     </label>
                                         <input
                                             required
@@ -132,8 +132,8 @@ const ModalAddStock = () => {
 
                                 {/* Kolom Kanan */}
                                 <div className="w-full lg:w-1/2 px-4 mb-4">
-                                    <label className="flex justify-start text-black text-sm mb-1">
-                                        Discount
+                                    <label className="flex justify-start text-black text-sm mt-4 mb-1">
+                                        Discount (%)
                                     </label>
                                         <input
                                             required
@@ -144,13 +144,12 @@ const ModalAddStock = () => {
                                 </div>
                                 <div className="w-full lg:w-1/2 px-4 mb-4">
                                     <label className="flex justify-start text-black text-sm mt-4 mb-1">
-                                        Tax
+                                        Tax (%)
                                     </label>
                                         <input
-                                            required
+                                            disabled
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
-                                            placeholder="Input Product Tax"
-                                            value={tax}
+                                            placeholder="10"
                                             onChange={(e) => setTax(e.target.value)} />
                                 </div>
                                 <div className="w-full lg:w-1/2 px-4 mb-4">

@@ -22,6 +22,7 @@ const Order = () => {
     const [imageUrl, setImageUrl] = useState("");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState(null);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -60,9 +61,9 @@ const Order = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
-            // Update the products state by filtering out the deleted product
-            setProduct((prevProducts) => prevProducts.filter(product => product._id !== productId));
+            // Setelah penghapusan berhasil, perbarui daftar produk.
+            getProduct();
+            closeModal(); // Tutup modal setelah penghapusan selesai.
         } catch (error) {
             console.log(error);
         }
@@ -123,9 +124,9 @@ const Order = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    currentData.map((stock) => (
+                                    currentData.map((stock, index) => (
                                         <tr className='bg-[#F5F5F5] rounded-md shadow-md' key={stock.product._id}>
-                                            <td className="text-center w-10 px-4 py-2 rounded-l-lg">{stock.stockId}</td>
+                                            <td className="text-center w-10 px-4 py-2 rounded-l-lg">{index + indexOfFirstRow + 1}</td>
                                             <td className="text-center max-w-[25px] h-auto px-4 py-2">
                                                 <img src={stock.product.image} className="w-20 h-20 rounded-sm mx-auto" />
                                             </td>
@@ -140,7 +141,7 @@ const Order = () => {
                                                     <button>
                                                         <ModalUpdateProduct />
                                                     </button>
-                                                    <button onClick={openModal} >
+                                                    <button onClick={openModal}>
                                                         <img alt='trash' src='./assets/trash_icon.svg'></img>
                                                     </button>
                                                     {isModalOpen && (

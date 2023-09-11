@@ -24,7 +24,7 @@ const ModalAddProduct = () => {
 
         try {
             const token = localStorage.getItem("token");
-            await axios.post('/api/stock/add', formData, {
+            await axios.post('/api/product/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
@@ -75,7 +75,7 @@ const ModalAddProduct = () => {
                 type="button"
                 onClick={() => setShowModal(true)}
             ><img className='mr-2' alt="create_icon" src='./assets/create_icon.svg'></img>
-                Add Receipt
+                Add Product
             </button>
             {showModal ? (
                 <>
@@ -83,7 +83,7 @@ const ModalAddProduct = () => {
                         <div className="relative w-auto my-6 mx-auto max-w-6xl mt-24">
                             <div className="border-0 rounded-lg shadow relative flex flex-col w-full bg-white outline-none focus:outline-none px-10 font-montserrat">
                                 <div className="flex items-start justify-between p-5 rounded-t ">
-                                    <h3 className="text-xl font=semibold">Add Receipt</h3>
+                                    <h3 className="text-xl font=semibold">Add Product</h3>
                                 </div>
                                 <div className="relative px-6 flex-auto">
                                     <form className="rounded w-full">
@@ -129,7 +129,7 @@ const ModalAddProduct = () => {
                                         type="button"
                                         onClick={handleSubmit}
                                     >
-                                        Add Receipt
+                                        Add Product
                                     </button>
                                 </div>
                             </div>

@@ -16,7 +16,7 @@ const ModalBook = ({ stockId }) => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.post(`/api/stockProduct`, formData, {
+      await axios.post(`/api/stockProduct/add`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
