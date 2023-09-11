@@ -22,7 +22,7 @@ const getAllStocks = async (req, res) => {
 
 // Controller untuk menambahkan penerimaan produk baru
 const addStock = async (req, res) => {
-  const { product, total_price, tax, discount, quantity_macro, satuan, expired_at } = req.body;
+  const { product, total_price, tax, discount, quantity_macro, satuan, expired_at, created_at } = req.body;
   try {
     // Periksa apakah ID produk adalah ID yang valid
     const isValidProductId = mongoose.Types.ObjectId.isValid(product);
@@ -52,6 +52,7 @@ const addStock = async (req, res) => {
       quantity_macro,
       satuan,
       expired_at,
+      created_at,
     });
 
     res.status(201).json(newStock);
