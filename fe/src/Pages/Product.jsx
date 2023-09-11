@@ -94,7 +94,7 @@ const Product = () => {
                                             <td className="text-center px-4 py-2 w-96">{produks.stock.product.name}</td>
                                             <td className="text-center w-40 px-4 py-2">{moment(produks.stock.expired_at).format("YYYY-MM-DD")}</td>
                                             <td className="text-center px-4 py-2">{produks.stock.product.category.name}</td>
-                                            <td className="text-center px-4 py-2">{produks.stock.fix_price}</td>
+                                            <td className="text-center px-4 py-2">{produks.price}</td>
                                             <td className="text-center px-4 py-2 rounded-r-lg">{produks.quantity_micro}</td>
                                         </tr>
                                     ))
