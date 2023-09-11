@@ -114,7 +114,7 @@ const ModalAddStock = () => {
                                         <input
                                             required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
-                                            placeholder="Input Product Name"
+                                            placeholder="Input Quantity Macro"
                                             value={quantityMacro}
                                             onChange={(e) => setQuantityMacro(e.target.value)} />
                                 </div>
@@ -125,7 +125,7 @@ const ModalAddStock = () => {
                                         <input
                                             required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
-                                            placeholder="Input Product Name"
+                                            placeholder="Input Product Price"
                                             value={price}
                                             onChange={(e) => setPrice(e.target.value)} />
                                 </div>
@@ -138,7 +138,7 @@ const ModalAddStock = () => {
                                         <input
                                             required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
-                                            placeholder="Input Product Name"
+                                            placeholder="Input Product Discount"
                                             value={discount}
                                             onChange={(e) => setDiscount(e.target.value)} />
                                 </div>
@@ -149,13 +149,13 @@ const ModalAddStock = () => {
                                         <input
                                             required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
-                                            placeholder="Input Product Name"
+                                            placeholder="Input Product Tax"
                                             value={tax}
                                             onChange={(e) => setTax(e.target.value)} />
                                 </div>
                                 <div className="w-full lg:w-1/2 px-4 mb-4">
                                     <label className="flex justify-start text-black text-sm mt-4 mb-1">
-                                        Expired Date (yy-mm-dd)
+                                        Expired Date (YYYY-MM-DD)
                                     </label>
                                     <input
                                         required
