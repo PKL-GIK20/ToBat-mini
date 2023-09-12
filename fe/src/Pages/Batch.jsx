@@ -25,6 +25,7 @@ const Batch = () => {
             });
             const imageUrl = response.data.url;
             setImageUrl(imageUrl);
+            
             setProduk(response.data);
             console.log(response.data);
         } catch (error) {
@@ -32,11 +33,24 @@ const Batch = () => {
         }
     };
 
+    const preprocessData = (data) => {
+        const groupedData = {};
+        data.forEach(item => {
+            const kode_obat = item.stock.product.kode_obat;
+            if (!groupedData[kode_obat]) {
+                groupedData[kode_obat] = { ...item };
+            } else {
+                groupedData[kode_obat].available_macro += item.available_macro;
+            }
+        });
+        return Object.values(groupedData);
+    };
+
     const maxRowsToShow = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastRow = currentPage * maxRowsToShow;
     const indexOfFirstRow = indexOfLastRow - maxRowsToShow;
-    const currentData = produk.slice(indexOfFirstRow, indexOfLastRow);
+    const currentData = preprocessData(produk).slice(indexOfFirstRow, indexOfLastRow);
 
     const handleNextPage = () => {
         if (indexOfLastRow < produk.length) {
@@ -76,7 +90,6 @@ const Batch = () => {
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Qty. Mi</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Price. Ma</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Price. Mi</th>
-                                    <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Exp. Date</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Buy. Date</th>
                                 </tr>
                             </thead>
@@ -100,7 +113,6 @@ const Batch = () => {
                                             <td className="text-center px-4 py-2">{produks.quantity_micro}</td>
                                             <td className="text-center px-4 py-2">Rp {produks.stock.fix_price}</td>
                                             <td className="text-center px-4 py-2">Rp {produks.price}</td>
-                                            <td className="text-center px-4 py-2">{moment(produks.stock.expired_at).format("YYYY-MM-DD")}</td>
                                             <td className="text-center px-4 py-2 rounded-r-lg">{moment(produks.stock.created_at).format("YYYY-MM-DD")}</td>
                                         </tr>
                                     ))
@@ -110,7 +122,7 @@ const Batch = () => {
                         </table>
                     </div>
                     <div className='flex justify-between w-[100%]'>
-                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {produk.length} entries</h3>
+                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {currentData.length} entries</h3>
                         <h3 className='mt-2 py-2'>{currentPage}</h3>
                         <div className='gap-0'>
                             {currentPage > 1 && (
