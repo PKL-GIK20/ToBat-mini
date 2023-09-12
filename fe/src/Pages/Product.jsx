@@ -9,8 +9,10 @@ const Product = () => {
     const [produk, setProduk] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState(null);
 
-    const openModal = () => {
+    const openModal = (Id) => {
+        setSelectedProductId(Id);
         setIsModalOpen(true);
     };
 
@@ -39,10 +41,10 @@ const Product = () => {
         }
     };
 
-    const deleteProduct = async (productId) => {
+    const deleteProduct = async () => {
         try {
             const token = localStorage.getItem("token");
-            await axios.delete(`/api/stock/${productId}`, {
+            await axios.delete(`/api/product/delete/${selectedProductId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -125,7 +127,7 @@ const Product = () => {
                                                     <button>
                                                         <ModalUpdateProduct />
                                                     </button>
-                                                    <button onClick={openModal}>
+                                                    <button onClick={() => openModal(product._id)}>
                                                         <img alt='trash' src='./assets/trash_icon.svg'></img>
                                                     </button>
                                                     {isModalOpen && (

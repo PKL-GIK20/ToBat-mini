@@ -4,10 +4,10 @@ import Navbar from "../Component/Navbar";
 import moment from 'moment';
 
 const Home = () => {
-    const data = [
-        { id: 1, code:"T001", name: 'Oskadon SP', category: 'Category X', qtyma : "12", qtymi : "120", pricema: "12.000", pricemi: "120.000", expired_at: "31/12/2023", buy_at: "31/12/2023" },
-        { id: 2, code:"T002", name: 'Oskadon SD', category: 'Category X', qtyma : "12", qtymi : "120", pricema: "12.000", pricemi: "120.000", expired_at: "31/12/2023", buy_at: "31/12/2023" },
-    ];
+    // const data = [
+    //     { id: 1, code:"T001", name: 'Oskadon SP', category: 'Category X', qtyma : "12", qtymi : "120", pricema: "12.000", pricemi: "120.000", expired_at: "31/12/2023", buy_at: "31/12/2023" },
+    //     { id: 2, code:"T002", name: 'Oskadon SD', category: 'Category X', qtyma : "12", qtymi : "120", pricema: "12.000", pricemi: "120.000", expired_at: "31/12/2023", buy_at: "31/12/2023" },
+    // ];
     const [produk, setProduk] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
 
@@ -23,6 +23,8 @@ const Home = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
+
+            
             const imageUrl = response.data.url;
             setImageUrl(imageUrl);
             setProduk(response.data);
@@ -37,6 +39,18 @@ const Home = () => {
     const indexOfLastRow = currentPage * maxRowsToShow;
     const indexOfFirstRow = indexOfLastRow - maxRowsToShow;
     const currentData = produk.slice(indexOfFirstRow, indexOfLastRow);
+
+    const isExpiredOrExpiring = (expiredDate) => {
+        const currentDate = moment();
+        const threeMonthsLater = moment().add(3, 'months');
+        return expiredDate.isSameOrAfter(currentDate) && expiredDate.isBefore(threeMonthsLater);
+    };
+
+    // Filter data yang akan ditampilkan
+    const filteredData = produk.filter((produks) => {
+        const expiredDate = moment(produks.stock.expired_at, 'YYYY/MM/DD');
+        return isExpiredOrExpiring(expiredDate);
+    });
 
     const handleNextPage = () => {
         if (indexOfLastRow < produk.length) {
@@ -77,7 +91,7 @@ const Home = () => {
                                 </tr>
                             </thead>
                             <tbody className=''>
-                                {currentData.length === 0 ? (
+                                {filteredData.length === 0 ? (
                                     <div className="absolute flex justify-center items-center w-[90%]">
                                         <div className="w-full mb-10 rounded-lg bg-white p-3">
                                             <p className="font-montserrat text-xl font-semibold mb-4 text-center">
@@ -86,7 +100,7 @@ const Home = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    currentData.map((produks, index) => (
+                                    filteredData.map((produks, index) => (
                                         <tr className='bg-[#F5F5F5] rounded-lg shadow-md' key={produks._id}>
                                             <td className="text-center px-4 py-2 rounded-l-lg">{index + indexOfFirstRow + 1}</td>
                                             <td className="text-center px-4 py-2">{produks.stock.product.kode_obat}</td>
@@ -103,7 +117,7 @@ const Home = () => {
                         </table>
                     </div>
                     <div className='flex justify-between w-[100%]'>
-                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {produk.length} entries</h3>
+                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {filteredData.length} entries</h3>
                         <h3 className='mt-2 py-2'>{currentPage}</h3>
                         <div className='gap-0'>
                             {currentPage > 1 && (
@@ -114,7 +128,7 @@ const Home = () => {
                                     <img alt='prev' className='w-[25px]' src='./assets/prev_icon.svg'></img>
                                 </button>
                             )}
-                            {indexOfLastRow < data.length && (
+                            {indexOfLastRow < currentData.length && (
                                 <button
                                     className="mt-2 px-1 py-2 rounded"
                                     onClick={handleNextPage}
