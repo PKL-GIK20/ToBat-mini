@@ -41,6 +41,7 @@ const Batch = () => {
                 groupedData[kode_obat] = { ...item };
             } else {
                 groupedData[kode_obat].available_macro += item.available_macro;
+                groupedData[kode_obat].quantity_micro += item.quantity_micro;
             }
         });
         return Object.values(groupedData);

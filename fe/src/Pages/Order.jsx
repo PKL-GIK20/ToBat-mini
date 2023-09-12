@@ -4,6 +4,7 @@ import Navbar from "../Component/Navbar";
 import ModalAddStock from '../Component/Order/ModalAddStock';
 import ModalUpdateProduct from '../Component/Order/ModalUpdateProduct';
 import ModalBook from '../Component/Order/ModalBook';
+import moment from 'moment';
 
 
 const Order = () => {
@@ -112,6 +113,7 @@ const Order = () => {
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Product Code</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Product Name</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Category</th>
+                                    <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Exp. Date</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Actions</th>
                                 </tr>
                             </thead>
@@ -134,34 +136,11 @@ const Order = () => {
                                             <td className="text-center w-36 px-4 py-2 rounded-l-lg">{stock.product.kode_obat}</td>
                                             <td className="text-center px-4 py-2 max-w-[200px]">{stock.product.name}</td>
                                             <td className="text-center px-4 py-2">{stock.product.category.name}</td>
+                                            <td className="text-center px-4 py-2">{moment(stock.expired_at).format("YYYY-MM-DD")}</td>
                                             <td className=" relative text-center items-center px-4 py-2 rounded-r-lg">
                                                 <button>
                                                     <ModalBook stockId={stock._id} />
                                                 </button>
-                                                <div className='absolute flex top-0 right-2 m-2'>
-                                                    <button>
-                                                        <ModalUpdateProduct />
-                                                    </button>
-                                                    <button onClick={() => openModal(stock._id)}>
-                                                        <img alt='trash' src='./assets/trash_icon.svg'></img>
-                                                    </button>
-                                                    {isModalOpen && (
-                                                        <div className="fixed inset-0 flex items-center justify-center z-50">
-                                                            <div className="bg-white p-5 rounded-lg shadow-md">
-                                                                <h3 className="text-xl font=semibold">Delete Product</h3>
-                                                                <p className="text-center">Are you sure you want to delete this product?</p>
-                                                                <div className="flex justify-center mt-4">
-                                                                    <button className=" text-gray-700 px-4 py-2 mr-2" onClick={closeModal}>
-                                                                        Cancel
-                                                                    </button>
-                                                                    <button className="bg-[#D94343] text-white px-4 py-2" onClick={deleteProduct}>
-                                                                        Delete
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </div>
                                             </td>
                                         </tr>
                                     ))
