@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from "../axiosConfig";
 import Navbar from "../Component/Navbar";
-import moment from 'moment';
 import ModalUpdateProduct from '../Component/Order/ModalUpdateProduct';
 import ModalAddProduct from '../Component/Order/ModalAddProduct';
 
@@ -81,14 +80,8 @@ const Product = () => {
             <div className='flex flex-col items-center w-[98%] ml-[80px] pt-6'>
                 <h1 className='text-[50px] font-montserrat mb-7'>List Product</h1>
                 <div className="flex flex-col items-center w-[90%] bg-white px-5 py-3 shadow-md font-montserrat rounded-md">
-                    <div className='flex justify-between w-[100%]'>
+                    <div className='flex justify-start w-[100%]'>
                         <ModalAddProduct />
-                        <div className='relative'>
-                            <input className='rounded-full p-1 w-[280px] px-9 border'
-                                placeholder='Search product name here...'
-                            ></input>
-                            <img alt='search' className='absolute left-2 top-1/2 transform -translate-y-1/2' src='./assets/search_icon.svg'></img>
-                        </div>
                     </div>
                     <div className=" w-full">
                         <table className="table-auto w-full border-separate border-spacing-y-3">
@@ -122,11 +115,9 @@ const Product = () => {
                                             <td className="text-center w-36 px-4 py-2 rounded-l-lg">{product.kode_obat}</td>
                                             <td className="text-center px-4 py-2 max-w-[200px]">{product.name}</td>
                                             <td className="text-center px-4 py-2">{product.category.name}</td>
-                                            <td className=" relative text-center items-center px-4 py-2 rounded-r-lg">
+                                            <td className=" relative items-center px-4 py-2 rounded-r-lg">
                                                 <div className='flex justify-center m-2'>
-                                                    <button>
-                                                        <ModalUpdateProduct />
-                                                    </button>
+                                                    <ModalUpdateProduct />
                                                     <button onClick={() => openModal(product._id)}>
                                                         <img alt='trash' src='./assets/trash_icon.svg'></img>
                                                     </button>

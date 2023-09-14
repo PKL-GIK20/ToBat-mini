@@ -10,6 +10,7 @@ const Home = () => {
     // ];
     const [produk, setProduk] = useState([]);
     const [imageUrl, setImageUrl] = useState("");
+    const [sortByCreatedDate, setSortByCreatedDate] = useState(false);
 
     useEffect(() => {
         getProduk();
@@ -24,7 +25,7 @@ const Home = () => {
                 },
             });
 
-            
+
             const imageUrl = response.data.url;
             setImageUrl(imageUrl);
             setProduk(response.data);
@@ -42,15 +43,29 @@ const Home = () => {
 
     const isExpiredOrExpiring = (expiredDate) => {
         const currentDate = moment();
-        const threeMonthsLater = moment().add(3, 'months');
+        const threeMonthsLater = moment().add(6, 'months');
         return expiredDate.isSameOrAfter(currentDate) && expiredDate.isBefore(threeMonthsLater);
     };
 
     // Filter data yang akan ditampilkan
-    const filteredData = produk.filter((produks) => {
-        const expiredDate = moment(produks.stock.expired_at, 'YYYY/MM/DD');
-        return isExpiredOrExpiring(expiredDate);
-    });
+    const filteredData = produk
+        .filter((produks) => {
+            const expiredDate = moment(produks.stock.expired_at, 'YYYY-MM-DD');
+            return isExpiredOrExpiring(expiredDate);
+        })
+        .sort((a, b) => {
+            const dateA = sortByCreatedDate
+                ? moment(a.stock.created_at)
+                : moment(a.stock.expired_at, 'YYYY-MM-DD');
+            const dateB = sortByCreatedDate
+                ? moment(b.stock.created_at)
+                : moment(b.stock.expired_at, 'YYYY-MM-DD');
+            return dateA - dateB;
+        });
+
+    const toggleSortOrder = () => {
+        setSortByCreatedDate((prevSortOrder) => !prevSortOrder);
+    };
 
     const handleNextPage = () => {
         if (indexOfLastRow < produk.length) {
@@ -69,13 +84,16 @@ const Home = () => {
             <Navbar />
             <div className='flex flex-col items-center w-[98%] ml-[80px] pt-6'>
                 <div className="flex flex-col items-center w-[90%] bg-white px-5 py-3 shadow-md font-montserrat rounded-md">
-                    <div className='flex justify-end w-[100%]'>
-                        <div className='relative'>
-                            <input className='rounded-full p-1 w-[280px] px-9 border'
-                                placeholder='Search product name here...'
-                            ></input>
-                            <img alt='search' className='absolute left-2 top-1/2 transform -translate-y-1/2' src='./assets/search_icon.svg'></img>
-                        </div>
+                    <div className='flex justify-start w-[100%]'>
+                        <button className='flex justify-center items-center' onClick={toggleSortOrder}>
+                            <img src='./assets/sort_icon.svg'></img>
+                            {sortByCreatedDate?(
+                                <h3 className='pl-2'>Sort as FIFO</h3>
+                            ):(
+                                <h3 className='pl-2'>Sort as FEFO</h3>
+                            )}
+                            {/* <h3 className='pl-2 font-montserrat'>Sort as FEFO</h3> */}
+                        </button>
                     </div>
                     <div className=" w-full">
                         <table className="table-auto w-full border-separate border-spacing-y-3">

@@ -25,7 +25,7 @@ const Batch = () => {
             });
             const imageUrl = response.data.url;
             setImageUrl(imageUrl);
-            
+
             setProduk(response.data);
             console.log(response.data);
         } catch (error) {
@@ -40,8 +40,9 @@ const Batch = () => {
             if (!groupedData[kode_obat]) {
                 groupedData[kode_obat] = { ...item };
             } else {
-                groupedData[kode_obat].available_macro += item.available_macro;
                 groupedData[kode_obat].quantity_micro += item.quantity_micro;
+                groupedData[kode_obat].price += item.price;
+                groupedData[kode_obat].stock.fix_price += item.stock.fix_price;
             }
         });
         return Object.values(groupedData);
@@ -52,6 +53,7 @@ const Batch = () => {
     const indexOfLastRow = currentPage * maxRowsToShow;
     const indexOfFirstRow = indexOfLastRow - maxRowsToShow;
     const currentData = preprocessData(produk).slice(indexOfFirstRow, indexOfLastRow);
+
 
     const handleNextPage = () => {
         if (indexOfLastRow < produk.length) {
@@ -71,14 +73,6 @@ const Batch = () => {
             <div className='flex flex-col items-center w-[98%] ml-[80px] pt-6'>
                 <h1 className='text-[50px] font-montserrat mb-7'>STOCK OPNAME</h1>
                 <div className="flex flex-col items-center w-[90%] bg-white px-5 py-3 shadow-md font-montserrat rounded-md">
-                    <div className='flex justify-end w-[100%]'>
-                        <div className='relative'>
-                            <input className='rounded-full p-1 w-[280px] px-9 border'
-                                placeholder='Search product name here...'
-                            ></input>
-                            <img alt='search' className='absolute left-2 top-1/2 transform -translate-y-1/2' src='./assets/search_icon.svg'></img>
-                        </div>
-                    </div>
                     <div className=" w-full">
                         <table className="table-auto w-full border-separate border-spacing-y-3">
                             <thead>
@@ -87,7 +81,6 @@ const Batch = () => {
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Code</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Name</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Category</th>
-                                    <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Qty. Ma</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Qty. Mi</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Price. Ma</th>
                                     <th className="px-4 py-1 border-line border-b-2 text-line font-normal">Price. Mi</th>
@@ -110,7 +103,6 @@ const Batch = () => {
                                             <td className="text-center px-4 py-2">{produks.stock.product.kode_obat}</td>
                                             <td className="text-center px-4 py-2">{produks.stock.product.name}</td>
                                             <td className="text-center px-4 py-2">{produks.stock.product.category.name}</td>
-                                            <td className="text-center px-4 py-2">{produks.available_macro}</td>
                                             <td className="text-center px-4 py-2">{produks.quantity_micro}</td>
                                             <td className="text-center px-4 py-2">Rp {produks.stock.fix_price}</td>
                                             <td className="text-center px-4 py-2">Rp {produks.price}</td>

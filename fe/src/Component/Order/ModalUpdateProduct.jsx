@@ -1,20 +1,81 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
+import axios from "../../axiosConfig";
+
 
 const ModalUpdateProduct = () => {
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
-    ]
+    const [name, setName] = useState("");
+    const [category, setCategory] = useState("");
+    const [image, setImage] = useState(null);
+    const [categoryOptions, setCategoryOptions] = useState([]);
+
     const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmit = async (event) => {
+        console.log(category)
+        event.preventDefault();
+
+        const formData = new FormData();
+        formData.append("image", image);
+        formData.append("name", name);
+        formData.append("category", category.value);
+
+        try {
+            const token = localStorage.getItem("token");
+            await axios.post('/api/product/add', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,
+                }
+            })
+            window.alert("Product Succesfully Added!");
+            window.location.reload();
+        } catch (error) {
+            console.error("Error creating note:", error);
+        }
+    };
+    const handleImage = (event) => {
+        const file = event.target.files[0];
+        setImage(file);
+    };
+    useEffect(() => {
+        fetchCategoryList();
+    }, []);
+
+    const fetchCategoryList = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get("/api/category", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const responseData = response.data;
+            console.log(responseData);
+
+            const categoryList = responseData.map((category) => ({
+                value: category._id,
+                label: `${category.name}`
+            }));
+
+            setCategoryOptions(categoryList);
+
+            console.log(categoryList);
+        } catch (error) {
+            console.error("Error fetching category:", error);
+        }
+    };
+
+
     return (
         <>
             <button
                 className="flex font-semibold"
                 type="button"
                 onClick={() => setShowModal(true)}
-            ><img className='mr-2' src='./assets/edit_icon.svg'></img>
+            ><img className='mr-2' alt="create_icon" src='./assets/edit_icon.svg'></img>
             </button>
             {showModal ? (
                 <>
@@ -22,29 +83,37 @@ const ModalUpdateProduct = () => {
                         <div className="relative w-auto my-6 mx-auto max-w-6xl mt-24">
                             <div className="border-0 rounded-lg shadow relative flex flex-col w-full bg-white outline-none focus:outline-none px-10 font-montserrat">
                                 <div className="flex items-start justify-between p-5 rounded-t ">
-                                    <h3 className="text-xl font=semibold">Update Product</h3>
+                                    <h3 className="text-xl font=semibold">Add Product</h3>
                                 </div>
                                 <div className="relative px-6 flex-auto">
                                     <form className="rounded w-full">
-                                        <label className="flex justify-start text-black text-sm mb-1">
+                                        <label className="block text-black text-sm mb-1">
                                             Product Name
                                         </label>
                                         <input
                                             required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
-                                            placeholder="Input Product Name" />
-                                        <label className="flex justify-start text-black text-sm mt-4 mb-1">
+                                            placeholder="Input Product Name"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)} />
+                                        <label className="block text-black text-sm mt-4 mb-1">
                                             Category
                                         </label>
                                         <Select
                                             required
-                                            className="text-start appearance-none rounded w-full text-black"
+                                            className=" appearance-none rounded w-full text-black"
                                             placeholder="Select Category"
-                                            options={options} />
-                                        <label className="flex justify-start text-black text-sm mt-4 mb-1">
+                                            options={categoryOptions}
+                                            onChange={setCategory}
+                                        />
+                                        <label className="block text-black text-sm mt-4 mb-1">
                                             Image
                                         </label>
-                                        <input type="file" className="shadow appearance-none border border-line rounded w-full p-2 text-black" />
+                                        <input
+                                            type="file"
+                                            className="shadow appearance-none border border-line rounded w-full p-2 text-black"
+                                            accept="image/*"
+                                            onChange={handleImage} />
                                     </form>
                                 </div>
                                 <div className="flex items-center justify-between p-6 rounded-b">
@@ -58,9 +127,9 @@ const ModalUpdateProduct = () => {
                                     <button
                                         className="text-white bg-[#20BFAA] text-sm px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1"
                                         type="button"
-                                        onClick={() => setShowModal(false)}
+                                        onClick={handleSubmit}
                                     >
-                                        Update
+                                        Add Product
                                     </button>
                                 </div>
                             </div>
