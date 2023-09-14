@@ -6,7 +6,7 @@ const Stock = require('../models/stock');
 
 // Controller untuk menambahkan stok produk baru
 const addStockProduct = async (req, res) => {
-  const { stock, available_macro } = req.body;
+  const { stock } = req.body;
 
   try {
     // Periksa apakah ID stock yang diterima adalah ID yang valid
@@ -39,7 +39,6 @@ const addStockProduct = async (req, res) => {
     // Buat stock product baru dengan harga per pcs dan quantity_micro yang dihasilkan dari perhitungan di atas
     const newStockProduct = await StockProd.create({
       stock,
-      available_macro,
       quantity_micro,
       price: pricePerPcs,
     });
