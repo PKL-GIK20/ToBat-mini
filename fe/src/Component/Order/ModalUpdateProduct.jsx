@@ -11,7 +11,7 @@ const ModalUpdateProduct = () => {
     return (
         <>
             <button
-                className="flex font-semibold justify-center items-center"
+                className="flex font-semibold"
                 type="button"
                 onClick={() => setShowModal(true)}
             ><img className='mr-2' src='./assets/edit_icon.svg'></img>
