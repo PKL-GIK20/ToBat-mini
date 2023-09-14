@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const autoIncrement = require('mongoose-auto-increment');
 
 const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique:true },
   image: { type: String }, 
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
   kode_obat: { type: String },

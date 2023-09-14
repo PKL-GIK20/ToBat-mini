@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const stockProdSchema = new mongoose.Schema({
   stock: { type: mongoose.Schema.Types.ObjectId, ref: 'Stock', required: true },
-  available_macro: { type: Number, required: true },
   quantity_micro: { type: Number, required: false },
   price: { type: Number, required: false },
 });
