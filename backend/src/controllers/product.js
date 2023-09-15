@@ -3,6 +3,7 @@
   const mongoose = require('mongoose');
   const Stock = require('../models/stock')
   const StockProduct = require('../models/stockProduct')
+  const fs = require('fs').promises; // Modul Node.js untuk mengelola file (menggunakan promises)
 
 
   const addProduct = async (req, res) => {
@@ -99,40 +100,72 @@ const deleteProductById = async (req, res) => {
 
 
 
-  // Controller untuk mengupdate produk berdasarkan ID
-  const updateProductById = async (req, res) => {
-    const productId = req.params.id;
-    const { name, image, category } = req.body;
-    try {
-      // Periksa apakah ID kategori yang diterima adalah ID yang valid
-      const isValidCategoryId = mongoose.Types.ObjectId.isValid(category);
-      if (!isValidCategoryId) {
-        return res.status(400).json({ message: 'Invalid category ID' });
-      }
 
-      // Periksa apakah kategori dengan ID yang diberikan ada dalam database
-      const existingCategory = await Category.findById(category);
-      if (!existingCategory) {
-        return res.status(404).json({ message: 'Category not found' });
-      }
+const updateProductById = async (req, res) => {
+  const productId = req.params.id;
+  const { name, category, kode_obat } = req.body;
 
-      // Periksa apakah produk dengan ID yang diberikan ada dalam database
-      const existingProduct = await Product.findById(productId);
-      if (!existingProduct) {
-        return res.status(404).json({ message: 'Product not found' });
-      }
-
-      // Update data produk dengan data yang baru
-      existingProduct.name = name;
-      existingProduct.image = image;
-      existingProduct.category = category;
-      await existingProduct.save();
-
-      res.status(200).json(existingProduct);
-    } catch (err) {
-      res.status(500).json({ message: 'Internal server error' });
+  try {
+    // Periksa apakah ID kategori yang diterima adalah ID yang valid
+    const isValidCategoryId = mongoose.Types.ObjectId.isValid(category);
+    if (!isValidCategoryId) {
+      return res.status(400).json({ message: 'Invalid category ID' });
     }
-  };
+
+    // Periksa apakah kategori dengan ID yang diberikan ada dalam database
+    const existingCategory = await Category.findById(category);
+    if (!existingCategory) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+
+    // Periksa apakah produk dengan ID yang diberikan ada dalam database
+    const existingProduct = await Product.findById(productId);
+    if (!existingProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Handle pembaruan gambar jika ada file yang diunggah
+    if (req.file) {
+      const uploadedFiles = req.files;
+
+      if (!uploadedFiles || uploadedFiles.length === 0) {
+       return res.status(400).json({ message: 'No images uploaded' });
+      }
+
+      const imageFilename = uploadedFiles[0].filename;
+      console.log(imageFilename);
+
+      // Hapus file gambar lama dari sistem penyimpanan (misalnya, sistem file)
+      const oldImagePath = existingProduct.image.replace(req.get("host"), ''); // Dapatkan path gambar lama
+
+      try {
+        await fs.unlink(oldImagePath); // Hapus file gambar lama
+      } catch (error) {
+        console.error('Error deleting old image file:', error.message);
+      }
+
+      // Tetapkan gambar yang baru
+      existingProduct.image = `/uploads/${imageFilename}`;
+    }
+
+    // Update data produk dengan data yang baru
+    existingProduct.name = name;
+    existingProduct.category = category;
+    existingProduct.kode_obat = kode_obat;
+
+    await existingProduct.save();
+
+    res.status(200).json(existingProduct);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+
+
+
 
   module.exports = {
     addProduct,

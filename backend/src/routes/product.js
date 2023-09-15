@@ -10,7 +10,7 @@ router.get('/', productController.getAllProducts);
 router.post('/add', productController.addProduct);
 
 // Rute untuk mengupdate produk berdasarkan ID
-router.put('/:id', productController.updateProductById);
+router.put('/update/:id', productController.updateProductById);
 
 // Rute untuk menghapus produk berdasarkan ID
 router.delete('/delete/:id', productController.deleteProductById);
