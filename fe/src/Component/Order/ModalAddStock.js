@@ -21,10 +21,9 @@ const ModalAddStock = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const quantityMacroNumber = parseFloat(quantityMacro);
-        if (isNaN(quantityMacroNumber) || typeof quantityMacro !== 'string') {
-            window.alert("Please enter a valid Quantity Macro.");
-            return;
+        if (!/^\d+$/.test(quantityMacro)) {
+            window.alert("Please enter a valid numeric value for Quantity Macro.");
+            return; // Stop form submission
         }
 
         const discountNumber = parseFloat(discount);
@@ -123,7 +122,7 @@ const ModalAddStock = () => {
                                     </div>
                                     <div className="w-full lg:w-1/2 px-4 mb-4">
                                         <label className="flex justify-start text-black text-sm mt-4 mb-1">
-                                            Quantity Macro
+                                            Quantity Macro (Box)
                                         </label>
                                         <input
                                             required
