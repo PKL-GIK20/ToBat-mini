@@ -4,17 +4,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../axiosConfig";
 
 
-const ModalUpdateProduct = () => {
-    const [name, setName] = useState("");
-    const [category, setCategory] = useState("");
-    const [image, setImage] = useState(null);
+const ModalUpdateProduct = ({ initialValues, ProductId }) => {
+    const [name, setName] = useState(initialValues.name);
+    const [category, setCategory] = useState(initialValues.category);
+    const [image, setImage] = useState(initialValues.image);
     const [categoryOptions, setCategoryOptions] = useState([]);
 
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
-        console.log(category)
         event.preventDefault();
 
         const formData = new FormData();
@@ -24,22 +23,26 @@ const ModalUpdateProduct = () => {
 
         try {
             const token = localStorage.getItem("token");
-            await axios.post('/api/product/add', formData, {
+            await axios.put(`/api/product/${ProductId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
-                }
-            })
-            window.alert("Product Succesfully Added!");
+                },
+            });
+            setShowModal(false);
+            window.alert("Product Successfully Updated!");
             window.location.reload();
         } catch (error) {
-            console.error("Error creating note:", error);
+            console.error("Error updating product:", error);
         }
     };
+
     const handleImage = (event) => {
         const file = event.target.files[0];
+        console.log(file); // Add this line to check if the file is captured correctly
         setImage(file);
     };
+    
     useEffect(() => {
         fetchCategoryList();
     }, []);
@@ -83,7 +86,7 @@ const ModalUpdateProduct = () => {
                         <div className="relative w-auto my-6 mx-auto max-w-6xl mt-24">
                             <div className="border-0 rounded-lg shadow relative flex flex-col w-full bg-white outline-none focus:outline-none px-10 font-montserrat">
                                 <div className="flex items-start justify-between p-5 rounded-t ">
-                                    <h3 className="text-xl font=semibold">Add Product</h3>
+                                    <h3 className="text-xl font=semibold">Update Product</h3>
                                 </div>
                                 <div className="relative px-6 flex-auto">
                                     <form className="rounded w-full">
@@ -100,20 +103,12 @@ const ModalUpdateProduct = () => {
                                             Category
                                         </label>
                                         <Select
-                                            required
                                             className=" appearance-none rounded w-full text-black"
                                             placeholder="Select Category"
                                             options={categoryOptions}
-                                            onChange={setCategory}
+                                            value={category}
+                                            onChange={(selectedOption) => setCategory(selectedOption)}
                                         />
-                                        <label className="block text-black text-sm mt-4 mb-1">
-                                            Image
-                                        </label>
-                                        <input
-                                            type="file"
-                                            className="shadow appearance-none border border-line rounded w-full p-2 text-black"
-                                            accept="image/*"
-                                            onChange={handleImage} />
                                     </form>
                                 </div>
                                 <div className="flex items-center justify-between p-6 rounded-b">
@@ -129,7 +124,7 @@ const ModalUpdateProduct = () => {
                                         type="button"
                                         onClick={handleSubmit}
                                     >
-                                        Add Product
+                                        Update Product
                                     </button>
                                 </div>
                             </div>

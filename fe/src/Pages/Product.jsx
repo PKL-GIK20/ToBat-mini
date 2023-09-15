@@ -117,7 +117,7 @@ const Product = () => {
                                             <td className="text-center px-4 py-2">{product.category.name}</td>
                                             <td className=" relative items-center px-4 py-2 rounded-r-lg">
                                                 <div className='flex justify-center m-2'>
-                                                    <ModalUpdateProduct />
+                                                    <ModalUpdateProduct ProductId={product._id} initialValues={{ name: product.name, category: product.category.name, image: product.image }} />
                                                     <button onClick={() => openModal(product._id)}>
                                                         <img alt='trash' src='./assets/trash_icon.svg'></img>
                                                     </button>

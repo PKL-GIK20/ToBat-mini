@@ -19,12 +19,14 @@ const ModalAddStock = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
-        console.log(product)
         event.preventDefault();
 
+        if (!product || !quantityMacro || !price || !discount || !tax || !expiredAt) {
+            window.alert("Please fill out all fields.");
+            return; // Stop form submission
+        }
+
         const formData = new FormData();
-        // formData.append("image", image);
-        // formData.append("product", name);
         formData.append("product", product.value);
         formData.append("quantity_macro", quantityMacro);
         formData.append("total_price", price);

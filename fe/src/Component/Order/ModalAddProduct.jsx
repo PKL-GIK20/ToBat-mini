@@ -14,8 +14,12 @@ const ModalAddProduct = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
-        console.log(category)
         event.preventDefault();
+
+        if (!name || !category || !image) {
+            window.alert("Please fill out all fields.");
+            return; // Stop form submission
+        }
 
         const formData = new FormData();
         formData.append("image", image);

@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from "../axiosConfig";
 import Navbar from "../Component/Navbar";
 import ModalAddStock from '../Component/Order/ModalAddStock';
-import ModalUpdateProduct from '../Component/Order/ModalUpdateProduct';
-import ModalBook from '../Component/Order/ModalBook';
-import moment from 'moment';
 
 
 const Order = () => {
@@ -62,7 +59,7 @@ const Order = () => {
             if (!groupedData[kode_obat]) {
                 groupedData[kode_obat] = { ...item };
             } else {
-                groupedData[kode_obat].available_macro += item.available_macro;
+                groupedData[kode_obat].quantity_macro += item.quantity_macro;
                 groupedData[kode_obat].quantity_micro += item.quantity_micro;
             }
         });
