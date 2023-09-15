@@ -98,9 +98,6 @@ const deleteProductById = async (req, res) => {
   }
 };
 
-
-
-
 const updateProductById = async (req, res) => {
   const productId = req.params.id;
   const { name, category, kode_obat } = req.body;
@@ -124,48 +121,33 @@ const updateProductById = async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Handle pembaruan gambar jika ada file yang diunggah
-    if (req.file) {
-      const uploadedFiles = req.files;
+    // Ambil nama file gambar dari request (req.file) yang telah diunggah menggunakan multer
+    const uploadedFiles = req.files;
 
-      if (!uploadedFiles || uploadedFiles.length === 0) {
-       return res.status(400).json({ message: 'No images uploaded' });
-      }
-
-      const imageFilename = uploadedFiles[0].filename;
-      console.log(imageFilename);
-
-      // Hapus file gambar lama dari sistem penyimpanan (misalnya, sistem file)
-      const oldImagePath = existingProduct.image.replace(req.get("host"), ''); // Dapatkan path gambar lama
-
-      try {
-        await fs.unlink(oldImagePath); // Hapus file gambar lama
-      } catch (error) {
-        console.error('Error deleting old image file:', error.message);
-      }
-
-      // Tetapkan gambar yang baru
-      existingProduct.image = `/uploads/${imageFilename}`;
+    if (!uploadedFiles || uploadedFiles.length === 0) {
+      return res.status(400).json({ message: 'No images uploaded' });
     }
 
-    // Update data produk dengan data yang baru
-    existingProduct.name = name;
-    existingProduct.category = category;
-    existingProduct.kode_obat = kode_obat;
+    const imageFilename = uploadedFiles[0].filename;
+    const url = req.protocol + "://" + req.get("host");
 
+    // Mendapatkan URL lengkap dengan host
+    const imageUrl = url + '/uploads/' + imageFilename;
+
+    // Update informasi produk dengan data yang baru
+    existingProduct.name = name;
+    existingProduct.image = imageUrl;
+    existingProduct.category = category;
+    existingProduct.kode_obat= kode_obat;
+
+    // Simpan perubahan ke database
     await existingProduct.save();
 
     res.status(200).json(existingProduct);
   } catch (err) {
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(400).json({ message: err.message });
   }
 };
-
-
-
-
-
-
 
   module.exports = {
     addProduct,
