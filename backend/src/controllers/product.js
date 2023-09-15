@@ -1,6 +1,8 @@
   const Product = require('../models/product');
   const Category = require('../models/category');
   const mongoose = require('mongoose');
+  const Stock = require('../models/stock')
+  const StockProduct = require('../models/stockProduct')
 
 
   const addProduct = async (req, res) => {
@@ -60,18 +62,42 @@
   };
 
   // Controller untuk menghapus produk berdasarkan ID
-  const deleteProductById = async (req, res) => {
-    const productId = req.params.id;
-    try {
-      const product = await Product.findByIdAndDelete(productId);
-      if (!product) {
-        return res.status(404).json({ message: 'Product not found' });
-      }
-      res.status(200).json({ message: 'Product deleted successfully' });
-    } catch (err) {
-      res.status(500).json({ message: 'Internal server error' });
+const deleteProductById = async (req, res) => {
+  const productId = req.params.id;
+  try {
+    // Periksa apakah produk dengan ID yang diberikan ada dalam database
+    const existingProduct = await Product.findById(productId);
+    if (!existingProduct) {
+      return res.status(404).json({ message: 'Product not found' });
     }
-  };
+
+    // Temukan semua catatan di tabel stock yang merujuk ke produk ini
+    const stocksToDelete = await Stock.find({ product: productId });
+
+    // Hapus catatan di tabel stockproduct yang merujuk ke stok yang akan dihapus
+    for (const stock of stocksToDelete) {
+      // Temukan semua catatan di tabel stockproduct yang merujuk ke stock ini
+      const stockProductsToDelete = await StockProduct.find({ stock: stock._id });
+      
+      // Hapus catatan di tabel stockproduct yang sesuai
+      for (const stockProduct of stockProductsToDelete) {
+        await stockProduct.remove();
+      }
+
+      // Hapus stok
+      await stock.remove();
+    }
+
+    // Hapus produk
+    await existingProduct.remove();
+
+    res.status(200).json({ message: 'Product and related records deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
 
   // Controller untuk mengupdate produk berdasarkan ID
   const updateProductById = async (req, res) => {
