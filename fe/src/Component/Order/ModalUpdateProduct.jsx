@@ -39,7 +39,30 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
 
     const handleImage = (event) => {
         const file = event.target.files[0];
-        console.log(file); // Add this line to check if the file is captured correctly
+    
+        // Check if a file was selected
+        if (!file) {
+            return;
+        }
+    
+        // Define allowed file formats (e.g., jpeg, jpg, png)
+        const allowedFormats = ["jpeg", "jpg", "png"];
+    
+        // Get the file extension
+        const fileExtension = file.name.split(".").pop().toLowerCase();
+    
+        // Check if the file format is allowed
+        if (!allowedFormats.includes(fileExtension)) {
+            // Show an alert for invalid file format
+            window.alert("Invalid file format. Please select a valid image (jpeg, jpg, png).");
+            // Clear the input field
+            event.target.value = "";
+            // Clear the image state variable
+            setImage(null);
+            return;
+        }
+    
+        // If the file format is allowed, update the image state
         setImage(file);
     };
     
@@ -109,6 +132,14 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
                                             value={category}
                                             onChange={(selectedOption) => setCategory(selectedOption)}
                                         />
+                                        <label className="block text-black text-sm mt-4 mb-1">
+                                            Image
+                                        </label>
+                                        <input
+                                            type="file"
+                                            className="shadow appearance-none border border-line rounded w-full p-2 text-black"
+                                            accept="image/*"
+                                            onChange={handleImage} />
                                     </form>
                                 </div>
                                 <div className="flex items-center justify-between p-6 rounded-b">

@@ -40,10 +40,36 @@ const ModalAddProduct = () => {
             console.error("Error creating note:", error);
         }
     };
+    
     const handleImage = (event) => {
         const file = event.target.files[0];
+    
+        // Check if a file was selected
+        if (!file) {
+            return;
+        }
+    
+        // Define allowed file formats (e.g., jpeg, jpg, png)
+        const allowedFormats = ["jpeg", "jpg", "png"];
+    
+        // Get the file extension
+        const fileExtension = file.name.split(".").pop().toLowerCase();
+    
+        // Check if the file format is allowed
+        if (!allowedFormats.includes(fileExtension)) {
+            // Show an alert for invalid file format
+            window.alert("Invalid file format. Please select a valid image (jpeg, jpg, png).");
+            // Clear the input field
+            event.target.value = "";
+            // Clear the image state variable
+            setImage(null);
+            return;
+        }
+    
+        // If the file format is allowed, update the image state
         setImage(file);
     };
+
     useEffect(() => {
         fetchCategoryList();
     }, []);
