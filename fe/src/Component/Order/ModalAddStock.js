@@ -29,13 +29,11 @@ const ModalAddStock = () => {
             window.alert("Please enter a valid numeric value for Quantity Macro.");
             return; // Stop form submission
         }
-
-
-        const discountNumber = parseFloat(discount);
-        if (isNaN(discountNumber) || typeof discount !== 'string') {
-            window.alert("Please enter a valid Discount.");
-            return;
+        if (!/^\d+$/.test(discount)) {
+            window.alert("Please enter a valid numeric value for Discount.");
+            return; // Stop form submission
         }
+
 
         if (!product || !quantityMacro || !price || !discount || !tax || !expiredAt) {
             window.alert("Please fill out all fields.");
