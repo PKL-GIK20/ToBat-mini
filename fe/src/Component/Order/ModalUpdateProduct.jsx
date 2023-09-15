@@ -23,7 +23,7 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
 
         try {
             const token = localStorage.getItem("token");
-            await axios.put(`/api/product/${ProductId}`, formData, {
+            await axios.put(`/api/product/update/${ProductId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,

@@ -21,14 +21,6 @@ const ModalAddProduct = () => {
             return; // Stop form submission
         }
 
-        // Check if a product with the same name already exists
-        const isDuplicate = await checkForDuplicateProduct(name);
-
-        if (isDuplicate) {
-            window.alert("A product with the same name already exists.");
-            return;
-        }
-
         const formData = new FormData();
         formData.append("image", image);
         formData.append("name", name);
@@ -45,24 +37,12 @@ const ModalAddProduct = () => {
             window.alert("Product Succesfully Added!");
             window.location.reload();
         } catch (error) {
-            console.error("Error creating note:", error);
-        }
-    };
-
-    const checkForDuplicateProduct = async (productName) => {
-        try {
-            const token = localStorage.getItem("token");
-            const response = await axios.get(`/api/product?name=${productName}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            // If a product with the same name is found, return true
-            return response.data.length > 0;
-        } catch (error) {
-            console.error("Error checking for duplicate product:", error);
-            return false;
+            if (error.response && error.response.status === 400) {
+                // HTTP 409 indicates a conflict, meaning the name is not unique
+                window.alert("Product name is already taken. Please choose a different name.");
+            } else {
+                console.error("Error creating product:", error);
+            }
         }
     };
 

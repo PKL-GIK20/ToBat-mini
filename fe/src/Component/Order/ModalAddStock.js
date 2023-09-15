@@ -11,7 +11,7 @@ const ModalAddStock = () => {
     const [quantityMacro, setQuantityMacro] = useState("");
     const [price, setPrice] = useState("");
     const [discount, setDiscount] = useState("");
-    const [tax, setTax] = useState("");
+    const [tax, setTax] = useState("10");
 
 
 
@@ -21,9 +21,21 @@ const ModalAddStock = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        const quantityMacroNumber = parseFloat(quantityMacro);
+        if (isNaN(quantityMacroNumber) || typeof quantityMacro !== 'string') {
+            window.alert("Please enter a valid Quantity Macro.");
+            return;
+        }
+
+        const discountNumber = parseFloat(discount);
+        if (isNaN(discountNumber) || typeof discount !== 'string') {
+            window.alert("Please enter a valid Discount.");
+            return;
+        }
+
         if (!product || !quantityMacro || !price || !discount || !tax || !expiredAt) {
             window.alert("Please fill out all fields.");
-            return; // Stop form submission
+            return;
         }
 
         const formData = new FormData();
@@ -64,7 +76,7 @@ const ModalAddStock = () => {
             console.log(responseData);
 
             const productList = responseData.map((product) => ({
-                value:  product._id ,
+                value: product._id,
                 label: `${product.name}`
             }));
 
@@ -87,87 +99,87 @@ const ModalAddStock = () => {
             </button>
             {showModal ? (
                 <>
-                <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-                    <div className="relative w-auto my-6 mx-auto max-w-6xl mt-24">
-                        <div className="border-0 rounded-lg shadow relative flex flex-col w-full bg-white outline-none focus:outline-none px-10 font-montserrat">
-                            <div className="flex items-start justify-between p-5 rounded-t">
-                                <h3 className="text-xl font-semibold">Add New Receipt</h3>
-                            </div>
-                            <div className="relative px-6 flex-auto flex flex-wrap">
-                                {/* Kolom Kiri */}
-                                <div className="w-full lg:w-1/2 px-4 mb-4">
-                                    <form className="rounded w-full">
-                                        <label className="block text-black text-sm mt-4 mb-1">
-                                            Product
-                                        </label>
-                                        <Select
-                                            required
-                                            className=" appearance-none rounded w-full text-black"
-                                            placeholder="Select Product"
-                                            options={productOptions}
-                                            onChange={setProduct}
-                                        />
-                                    </form>
+                    <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                        <div className="relative w-auto my-6 mx-auto max-w-6xl mt-24">
+                            <div className="border-0 rounded-lg shadow relative flex flex-col w-full bg-white outline-none focus:outline-none px-10 font-montserrat">
+                                <div className="flex items-start justify-between p-5 rounded-t">
+                                    <h3 className="text-xl font-semibold">Add New Receipt</h3>
                                 </div>
-                                <div className="w-full lg:w-1/2 px-4 mb-4">
-                                    <label className="flex justify-start text-black text-sm mt-4 mb-1">
-                                        Quantity Macro
-                                    </label>
+                                <div className="relative px-6 flex-auto flex flex-wrap">
+                                    {/* Kolom Kiri */}
+                                    <div className="w-full lg:w-1/2 px-4 mb-4">
+                                        <form className="rounded w-full">
+                                            <label className="block text-black text-sm mt-4 mb-1">
+                                                Product
+                                            </label>
+                                            <Select
+                                                required
+                                                className=" appearance-none rounded w-full text-black"
+                                                placeholder="Select Product"
+                                                options={productOptions}
+                                                onChange={setProduct}
+                                            />
+                                        </form>
+                                    </div>
+                                    <div className="w-full lg:w-1/2 px-4 mb-4">
+                                        <label className="flex justify-start text-black text-sm mt-4 mb-1">
+                                            Quantity Macro
+                                        </label>
                                         <input
                                             required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
                                             placeholder="Input Quantity Macro"
                                             value={quantityMacro}
                                             onChange={(e) => setQuantityMacro(e.target.value)} />
-                                </div>
-                                <div className="w-full lg:w-1/2 px-4 mb-4">
-                                    <label className="flex justify-start text-black text-sm mt-4 mb-1">
-                                        Price (Rp)
-                                    </label>
+                                    </div>
+                                    <div className="w-full lg:w-1/2 px-4 mb-4">
+                                        <label className="flex justify-start text-black text-sm mt-4 mb-1">
+                                            Price (Rp)
+                                        </label>
                                         <input
                                             required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
                                             placeholder="Input Product Price"
                                             value={price}
                                             onChange={(e) => setPrice(e.target.value)} />
-                                </div>
+                                    </div>
 
-                                {/* Kolom Kanan */}
-                                <div className="w-full lg:w-1/2 px-4 mb-4">
-                                    <label className="flex justify-start text-black text-sm mt-4 mb-1">
-                                        Discount (%)
-                                    </label>
+                                    {/* Kolom Kanan */}
+                                    <div className="w-full lg:w-1/2 px-4 mb-4">
+                                        <label className="flex justify-start text-black text-sm mt-4 mb-1">
+                                            Discount (%)
+                                        </label>
                                         <input
                                             required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
                                             placeholder="Input Product Discount"
                                             value={discount}
                                             onChange={(e) => setDiscount(e.target.value)} />
-                                </div>
-                                <div className="w-full lg:w-1/2 px-4 mb-4">
-                                    <label className="flex justify-start text-black text-sm mt-4 mb-1">
-                                        Tax (%)
-                                    </label>
+                                    </div>
+                                    <div className="w-full lg:w-1/2 px-4 mb-4">
+                                        <label className="flex justify-start text-black text-sm mt-4 mb-1">
+                                            Tax (%)
+                                        </label>
                                         <input
-                                            required
+                                            disabled
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
                                             placeholder="Input Product Tax"
                                             value={tax}
-                                            onChange={(e) => setTax(e.target.value)} />
-                                </div>
-                                <div className="w-full lg:w-1/2 px-4 mb-4">
-                                    <label className="flex justify-start text-black text-sm mt-4 mb-1">
-                                        Expired Date (YYYY-MM-DD)
-                                    </label>
-                                    <input
-                                        required
-                                        type="text" // Gunakan tipe teks untuk format yy-mm-dd
-                                        className="shadow appearance-none border border-line rounded w-full p-2 text-black"
-                                        placeholder="Input Expired Date"
-                                        onChange={(e) => setExpiredAt(e.target.value)} // Simpan nilai ke dalam state
-                                    />
+                                        />
                                     </div>
-                            </div>
+                                    <div className="w-full lg:w-1/2 px-4 mb-4">
+                                        <label className="flex justify-start text-black text-sm mt-4 mb-1">
+                                            Expired Date (YYYY-MM-DD)
+                                        </label>
+                                        <input
+                                            required
+                                            type="text" // Gunakan tipe teks untuk format yy-mm-dd
+                                            className="shadow appearance-none border border-line rounded w-full p-2 text-black"
+                                            placeholder="Input Expired Date"
+                                            onChange={(e) => setExpiredAt(e.target.value)} // Simpan nilai ke dalam state
+                                        />
+                                    </div>
+                                </div>
                                 <div className="flex items-center justify-between p-6 rounded-b">
                                     <button
                                         className="background-transparent px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
@@ -184,9 +196,9 @@ const ModalAddStock = () => {
                                         Add Receipt
                                     </button>
                                 </div>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </>
             ) : null}
         </>
