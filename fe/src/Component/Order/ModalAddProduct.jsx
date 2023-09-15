@@ -21,6 +21,14 @@ const ModalAddProduct = () => {
             return; // Stop form submission
         }
 
+        // Check if a product with the same name already exists
+        const isDuplicate = await checkForDuplicateProduct(name);
+
+        if (isDuplicate) {
+            window.alert("A product with the same name already exists.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("image", image);
         formData.append("name", name);
@@ -40,21 +48,38 @@ const ModalAddProduct = () => {
             console.error("Error creating note:", error);
         }
     };
-    
+
+    const checkForDuplicateProduct = async (productName) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(`/api/product?name=${productName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            // If a product with the same name is found, return true
+            return response.data.length > 0;
+        } catch (error) {
+            console.error("Error checking for duplicate product:", error);
+            return false;
+        }
+    };
+
     const handleImage = (event) => {
         const file = event.target.files[0];
-    
+
         // Check if a file was selected
         if (!file) {
             return;
         }
-    
+
         // Define allowed file formats (e.g., jpeg, jpg, png)
         const allowedFormats = ["jpeg", "jpg", "png"];
-    
+
         // Get the file extension
         const fileExtension = file.name.split(".").pop().toLowerCase();
-    
+
         // Check if the file format is allowed
         if (!allowedFormats.includes(fileExtension)) {
             // Show an alert for invalid file format
@@ -65,7 +90,7 @@ const ModalAddProduct = () => {
             setImage(null);
             return;
         }
-    
+
         // If the file format is allowed, update the image state
         setImage(file);
     };
@@ -86,7 +111,7 @@ const ModalAddProduct = () => {
             console.log(responseData);
 
             const categoryList = responseData.map((category) => ({
-                value:  category._id ,
+                value: category._id,
                 label: `${category.name}`
             }));
 
