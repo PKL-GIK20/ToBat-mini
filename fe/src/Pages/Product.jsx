@@ -50,6 +50,7 @@ const Product = () => {
             });
             // Setelah penghapusan berhasil, perbarui daftar produk.
             getProduk();
+            window.alert("Product successfully deleted!");
             closeModal(); // Tutup modal setelah penghapusan selesai.
         } catch (error) {
             console.log(error);
