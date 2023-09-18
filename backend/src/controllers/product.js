@@ -6,37 +6,38 @@
   const fs = require('fs').promises; // Modul Node.js untuk mengelola file (menggunakan promises)
 
 
-  const addProduct = async (req, res) => {
-    const { name, category } = req.body;
-    console.log (req.body)
-    try {
+const addProduct = async (req, res) => {
+  const { name, category } = req.body;
 
-      // Periksa apakah kategori dengan ID yang diberikan ada dalam database
-      const existingCategory = await Category.findById(category);
-      if (!existingCategory) {
-        return res.status(404).json({ message: 'Category not found' });
-      }
+  try {
+    // Periksa apakah kategori dengan ID yang diberikan ada dalam database
+    const existingCategory = await Category.findById(category);
+    if (!existingCategory) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
 
-      // Ambil nama file gambar dari request (req.file) yang telah diunggah menggunakan multer
+    // Inisialisasi imageUrl dengan nilai null
+    let imageUrl = null;
+
+    // Periksa apakah ada file yang diunggah
+    if (req.files && req.files.length > 0) {
       const uploadedFiles = req.files;
-
-      if (!uploadedFiles || uploadedFiles.length === 0) {
-       return res.status(400).json({ message: 'No images uploaded' });
-      }
 
       const imageFilename = uploadedFiles[0].filename;
       const url = req.protocol + "://" + req.get("host");
 
       // Mendapatkan URL lengkap dengan host
-      const imageUrl = url + '/uploads/' + imageFilename;
-
-      // Buat produk baru dengan mengaitkannya dengan kategori yang valid dan menyimpan URL gambar
-      const newProduct = await Product.create({ name, image: imageUrl, category });
-      res.status(201).json(newProduct);
-    } catch (err) {
-      res.status(400).json({ message: err.message });
+      imageUrl = url + '/uploads/' + imageFilename;
     }
-  };
+
+    // Buat produk baru dengan mengaitkannya dengan kategori yang valid dan menyimpan URL gambar jika ada
+    const newProduct = await Product.create({ name, image: imageUrl, category });
+    res.status(201).json(newProduct);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 
 
   const getAllProducts = async (req, res) => {
