@@ -2,7 +2,18 @@ const mongoose = require('mongoose');
 const autoIncrement = require('mongoose-auto-increment');
 
 const productSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique:true },
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: function (value) {
+        // Menggunakan regular expression untuk memeriksa nama produk
+        return /^[a-zA-Z0-9\s]+$/.test(value);
+      },
+      message: 'Product name can only contain letters, numbers, and spaces.',
+    },
+  },
   image: { type: String }, 
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
   kode_obat: { type: String },

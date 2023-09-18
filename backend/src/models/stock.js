@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const stockSchema = new mongoose.Schema({
   product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-  total_price: { type: Number, required: true, min:0 },
+  total_price: { type: Number, required: true, min:1 },
   tax: { type: Number, default: 10 },
-  discount: { type: Number, required:true},
-  quantity_macro: { type: Number, required: true },
+  discount: { type: Number, required:true, min:1},
+  quantity_macro: { type: Number, required: true, min:1 },
   satuan: { type: String, default: 'box' }, 
   expired_at: { type: Date, required: true },
   fix_price: { type: Number, required: false },
