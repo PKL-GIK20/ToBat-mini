@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema({
     validate: {
       validator: function (value) {
         // Menggunakan regular expression untuk memeriksa nama produk
-        return /^[a-zA-Z0-9\s]+$/.test(value);
+        return /[a-zA-Z]/.test(value);
       },
       message: 'Product name can only contain letters, numbers, and spaces.',
     },
