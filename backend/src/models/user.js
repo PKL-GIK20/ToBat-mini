@@ -16,7 +16,7 @@ const userSchema = mongoose.Schema({
         // At least 8 characters, including at least one uppercase letter, one lowercase letter, one digit, and one special character
         return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/.test(password);
       },
-      message: "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+      message: "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one digit, and one special character (e.g., !@#$%^&*).",
     },
   },
   role: {

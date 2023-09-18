@@ -5,28 +5,38 @@ const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
   try {
-    let user = req.body;
-    let result = user.password.match(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,32}$/
-    );
-    if (result) {
+    const { username, password, confirmPassword } = req.body;
 
-      const salt = bcrypt.genSaltSync(parseInt(process.env.SALT));
-      const password = bcrypt.hashSync(user.password, salt);
-      user.password = password;
-      const saveUser = await Users.create(user);
-      res
-        .status(201)
-        .json({ message: "Successfully registered a new user", saveUser });
-    } else {
-      res.status(400).json({ message: "Please input a valid password" });
+    // Memeriksa apakah password memenuhi persyaratan
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]{8,}$/;
+    const isPasswordValid = passwordRegex.test(password);
+
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Password must meet the requirements." });
     }
+
+    // Memeriksa apakah password dan konfirmasi password sama
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match." });
+    }
+
+    const salt = bcrypt.genSaltSync(parseInt(process.env.SALT));
+    const hashedPassword = bcrypt.hashSync(password, salt);
+
+    const newUser = {
+      username,
+      password: hashedPassword,
+    };
+
+    const saveUser = await Users.create(newUser);
+    res.status(201).json({ message: "Successfully registered a new user", saveUser });
   } catch (error) {
     res.status(400).json({
       message: error.message,
     });
   }
 };
+
 
 const login = async (req, res) => {
   try {
