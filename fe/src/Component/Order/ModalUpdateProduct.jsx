@@ -126,6 +126,7 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
                                             Category
                                         </label>
                                         <Select
+                                            required
                                             className=" appearance-none rounded w-full text-black"
                                             placeholder="Select Category"
                                             options={categoryOptions}

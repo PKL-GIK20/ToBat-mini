@@ -73,6 +73,15 @@ const ModalAddProduct = () => {
       return;
     }
 
+    if (file.size > 512000) {
+      window.alert("Invalid file size. File size should not exceed 500KB.");
+      // Clear the input field
+      event.target.value = "";
+      // Clear the image state variable
+      setImage(null);
+      return;
+    }
+
     // If the file format is allowed, update the image state
     setImage(file);
   };
