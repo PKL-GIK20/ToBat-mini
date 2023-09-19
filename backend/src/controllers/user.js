@@ -15,11 +15,6 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "Password must meet the requirements." });
     }
 
-    // Memeriksa apakah password dan konfirmasi password sama
-    if (password !== confirmPassword) {
-      return res.status(400).json({ message: "Passwords do not match." });
-    }
-
     const salt = bcrypt.genSaltSync(parseInt(process.env.SALT));
     const hashedPassword = bcrypt.hashSync(password, salt);
 
