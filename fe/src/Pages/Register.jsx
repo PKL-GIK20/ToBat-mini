@@ -52,15 +52,19 @@ const Register = () => {
       );
       setIsErrorShown(true);
       return;
+    } else if (/^[0-9]*$/.test(username) || /^[^a-zA-Z0-9]+$/.test(username)) {
+      setError("Username must contain at least one letter.");
+      setIsErrorShown(true);
+      return;
     } else if (
-      !/^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/.test(password)
+      !/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!])[A-Za-z\d@#$%^&+=!]{8,}$/.test(password)
     ) {
       setError(
         "Password must contain at least 8 characters, including uppercase, lowercase, and numbers!"
       );
       setIsErrorShown(true);
       return;
-    } else if (password !== confirmPassword) {
+    } else if (password != confirmPassword) {
       setError("Passwords do not match.");
       setIsErrorShown(true);
       return;
@@ -69,13 +73,14 @@ const Register = () => {
       // Create an object with the form data
       const formData = {
         username: username,
-        password: password,
+        password: password
       };
 
       // Send the data to the Back-End using Axios
       axios
         .post("/api/register", formData)
         .then((response) => {
+          // Handle success here
           setSubmitted(true);
           setError(false);
           setIsErrorShown(false);
@@ -84,9 +89,6 @@ const Register = () => {
             setIsLoading(false);
             navigate("/");
           }, 3000);
-        })
-        .catch((error) => {
-          setError(true);
         });
     }
   };

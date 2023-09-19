@@ -29,7 +29,7 @@ const ModalAddStock = () => {
             window.alert("Please enter a valid numeric value for Quantity Macro.");
             return; // Stop form submission
         }
-        if (!/^\d+$/.test(discount)) {
+        if (!/^\d+$/.test(discount) || discount == 0 ) {
             window.alert("Please enter a valid numeric value for Discount.");
             return; // Stop form submission
         }
