@@ -10,6 +10,10 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
     const [image, setImage] = useState(initialValues.image);
     const [categoryOptions, setCategoryOptions] = useState([]);
 
+    console.log(categoryOptions)
+
+    console.log(category)
+
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
@@ -40,29 +44,19 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
     const handleImage = (event) => {
         const file = event.target.files[0];
     
-        // Check if a file was selected
         if (!file) {
             return;
         }
-    
-        // Define allowed file formats (e.g., jpeg, jpg, png)
+
         const allowedFormats = ["jpeg", "jpg", "png"];
-    
-        // Get the file extension
         const fileExtension = file.name.split(".").pop().toLowerCase();
     
-        // Check if the file format is allowed
         if (!allowedFormats.includes(fileExtension)) {
-            // Show an alert for invalid file format
             window.alert("Invalid file format. Please select a valid image (jpeg, jpg, png).");
-            // Clear the input field
             event.target.value = "";
-            // Clear the image state variable
             setImage(null);
             return;
         }
-    
-        // If the file format is allowed, update the image state
         setImage(file);
     };
     
@@ -82,8 +76,8 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
             console.log(responseData);
 
             const categoryList = responseData.map((category) => ({
-                value: category._id,
-                label: `${category.name}`
+                _id : category._id,
+                name : `${category.name}`
             }));
 
             setCategoryOptions(categoryList);
@@ -93,6 +87,8 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
             console.error("Error fetching category:", error);
         }
     };
+
+    
 
 
     return (
@@ -117,7 +113,6 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
                                             Product Name
                                         </label>
                                         <input
-                                            required
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
                                             placeholder="Input Product Name"
                                             value={name}
@@ -126,12 +121,13 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
                                             Category
                                         </label>
                                         <Select
-                                            required
+                                            getOptionLabel={selectedOption => selectedOption.name}
+                                            getOptionValue={selectedOption => selectedOption.name}
                                             className=" appearance-none rounded w-full text-black"
                                             placeholder="Select Category"
                                             options={categoryOptions}
                                             value={category}
-                                            onChange={(selectedOption) => setCategory(selectedOption)}
+                                            onChange={(selectedOption) => {console.log(selectedOption); setCategory(selectedOption)}}
                                         />
                                         <label className="block text-black text-sm mt-4 mb-1">
                                             Image

@@ -152,6 +152,7 @@ const ModalAddProduct = () => {
                     />
                     <label className="block text-black text-sm mt-4 mb-1">Image</label>
                     <input
+                      required
                       type="file"
                       className="shadow appearance-none border border-line rounded w-full p-2 text-black"
                       accept="image/*"
