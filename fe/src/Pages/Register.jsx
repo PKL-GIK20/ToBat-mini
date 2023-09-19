@@ -89,6 +89,11 @@ const Register = () => {
             setIsLoading(false);
             navigate("/");
           }, 3000);
+        })
+        .catch((error) => {
+          setError("Damn Banget COy");
+          setIsErrorShown(true);
+          setIsLoading(false); // Stop loading in case of an error
         });
     }
   };

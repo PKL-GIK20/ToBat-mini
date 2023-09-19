@@ -21,11 +21,11 @@ const ModalAddStock = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         
-        if (!/^\d+$/.test(price)) {
+        if (!/^\d+$/.test(price) || price == 0) {
             window.alert("Please enter a valid numeric value for Price.");
             return; // Stop form submission
         }
-        if (!/^\d+$/.test(quantityMacro)) {
+        if (!/^\d+$/.test(quantityMacro) || quantityMacro == 0) {
             window.alert("Please enter a valid numeric value for Quantity Macro.");
             return; // Stop form submission
         }
