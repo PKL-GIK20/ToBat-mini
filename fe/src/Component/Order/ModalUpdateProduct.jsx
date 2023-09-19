@@ -8,14 +8,19 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
     const [name, setName] = useState(initialValues.name);
     const [category, setCategory] = useState(initialValues.category);
     const [image, setImage] = useState(initialValues.image);
+    const [defaultImage, setDefaultImage] = useState(null);
     const [categoryOptions, setCategoryOptions] = useState([]);
-
-    console.log(categoryOptions)
-
-    console.log(category)
+    console.log(image);
 
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (showModal) {
+            // Set the default image here, e.g., initialValues.image
+            setDefaultImage(initialValues.image);
+        }
+    }, [showModal, initialValues.image]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -23,7 +28,7 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
         const formData = new FormData();
         formData.append("image", image);
         formData.append("name", name);
-        formData.append("category", category.value);
+        formData.append("category", category._id);
 
         try {
             const token = localStorage.getItem("token");
@@ -58,6 +63,7 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
             return;
         }
         setImage(file);
+        console.log(file);
     };
     
     useEffect(() => {
@@ -136,7 +142,7 @@ const ModalUpdateProduct = ({ initialValues, ProductId }) => {
                                             type="file"
                                             className="shadow appearance-none border border-line rounded w-full p-2 text-black"
                                             accept="image/*"
-                                            onChange={handleImage} />
+                                            onChange={handleImage}/>
                                     </form>
                                 </div>
                                 <div className="flex items-center justify-between p-6 rounded-b">
