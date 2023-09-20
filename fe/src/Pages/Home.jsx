@@ -39,7 +39,7 @@ const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastRow = currentPage * maxRowsToShow;
     const indexOfFirstRow = indexOfLastRow - maxRowsToShow;
-    const currentData = produk.slice(indexOfFirstRow, indexOfLastRow);
+    const currentData = filteredData(produk).slice(indexOfFirstRow, indexOfLastRow);
 
     const isExpiredOrExpiring = (expiredDate) => {
         const currentDate = moment();
