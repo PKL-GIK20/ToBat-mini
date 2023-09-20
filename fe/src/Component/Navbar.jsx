@@ -89,12 +89,12 @@ export default function Navbar() {
                         /></a>}
                 </li>
                 <li className="flex justify-center absolute inset-x-0 bottom-6">
-                    <a onClick={openModal} className="w-[30%] my-4 outline-none">
+                    <button onClick={openModal} className="w-[30%] my-4 outline-none">
                         <img
                             src={"./assets/sign_out_icon.svg"}
                             alt="Icon"
                         />
-                    </a>
+                    </button>
                 </li>
             </ul>
             {/* Logout Confirmation Modal */}

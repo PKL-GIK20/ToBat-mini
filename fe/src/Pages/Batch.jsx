@@ -33,26 +33,11 @@ const Batch = () => {
         }
     };
 
-    const preprocessData = (data) => {
-        const groupedData = {};
-        data.forEach(item => {
-            const kode_obat = item.stock.product.kode_obat;
-            if (!groupedData[kode_obat]) {
-                groupedData[kode_obat] = { ...item };
-            } else {
-                groupedData[kode_obat].quantity_micro += item.quantity_micro;
-                groupedData[kode_obat].price += item.price;
-                groupedData[kode_obat].stock.fix_price += item.stock.fix_price;
-            }
-        });
-        return Object.values(groupedData);
-    };
-
     const maxRowsToShow = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastRow = currentPage * maxRowsToShow;
     const indexOfFirstRow = indexOfLastRow - maxRowsToShow;
-    const currentData = preprocessData(produk).slice(indexOfFirstRow, indexOfLastRow);
+    const currentData = produk.slice(indexOfFirstRow, indexOfLastRow);
 
 
     const handleNextPage = () => {
