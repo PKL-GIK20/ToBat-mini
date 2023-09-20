@@ -39,7 +39,7 @@ const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const indexOfLastRow = currentPage * maxRowsToShow;
     const indexOfFirstRow = indexOfLastRow - maxRowsToShow;
-    const currentData = filteredData(produk).slice(indexOfFirstRow, indexOfLastRow);
+    const currentData = produk.slice(indexOfFirstRow, indexOfLastRow);
 
     const isExpiredOrExpiring = (expiredDate) => {
         const currentDate = moment();
@@ -48,7 +48,7 @@ const Home = () => {
     };
 
     // Filter data yang akan ditampilkan
-    const filteredData = produk
+    const filteredData = currentData
         .filter((produks) => {
             const expiredDate = moment(produks.stock.expired_at, 'YYYY-MM-DD');
             return isExpiredOrExpiring(expiredDate);
@@ -62,6 +62,8 @@ const Home = () => {
                 : moment(b.stock.expired_at, 'YYYY-MM-DD');
             return dateA - dateB;
         });
+
+
 
     const toggleSortOrder = () => {
         setSortByCreatedDate((prevSortOrder) => !prevSortOrder);
@@ -135,7 +137,7 @@ const Home = () => {
                         </table>
                     </div>
                     <div className='flex justify-between w-[100%]'>
-                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {currentData.length} entries</h3>
+                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {filteredData.length} entries</h3>
                         <h3 className='mt-2 py-2'>{currentPage}</h3>
                         <div className='gap-0'>
                             {currentPage > 1 && (
