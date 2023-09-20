@@ -134,7 +134,7 @@ const Order = () => {
                         </table>
                     </div>
                     <div className='flex justify-between w-[100%]'>
-                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {products.length} entries</h3>
+                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {currentData.length} entries</h3>
                         <h3 className='mt-2 py-2'>{currentPage}</h3>
                         <div className='gap-0'>
                             {currentPage > 1 && (
