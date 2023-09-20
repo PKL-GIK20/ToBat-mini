@@ -135,7 +135,7 @@ const Home = () => {
                         </table>
                     </div>
                     <div className='flex justify-between w-[100%]'>
-                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {filteredData.length} entries</h3>
+                        <h3 className='mt-2 py-2'>Showing {indexOfFirstRow + 1} to {indexOfLastRow} of {currentData.length} entries</h3>
                         <h3 className='mt-2 py-2'>{currentPage}</h3>
                         <div className='gap-0'>
                             {currentPage > 1 && (
@@ -146,7 +146,7 @@ const Home = () => {
                                     <img alt='prev' className='w-[25px]' src='./assets/prev_icon.svg'></img>
                                 </button>
                             )}
-                            {indexOfLastRow < currentData.length && (
+                            {indexOfLastRow < produk.length && (
                                 <button
                                     className="mt-2 px-1 py-2 rounded"
                                     onClick={handleNextPage}

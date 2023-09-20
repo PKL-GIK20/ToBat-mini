@@ -111,7 +111,7 @@ const Batch = () => {
                                     <img alt='prev' className='w-[25px]' src='./assets/prev_icon.svg'></img>
                                 </button>
                             )}
-                            {indexOfLastRow < currentData.length && (
+                            {indexOfLastRow < produk.length && (
                                 <button
                                     className="mt-2 px-1 py-2 rounded"
                                     onClick={handleNextPage}
